@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassmorphism Calculator | AsmrProg</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="calculator">
+        <!-- شاشة العرض -->
+        <input type="text" class="screen" readonly>
+        
+        <!-- أزرار التحكم والعمليات -->
+        <div class="buttons">
+            <button class="btn btn-clear">C</button>
+            <button class="btn btn-delete">&larr;</button>
+            <button class="btn btn-operator" data-num="/">&divide;</button>
+            <button class="btn btn-operator" data-num="*">&times;</button>
+            
+            <button class="btn" data-num="7">7</button>
+            <button class="btn" data-num="8">8</button>
+            <button class="btn" data-num="9">9</button>
+            <button class="btn btn-operator" data-num="-">&minus;</button>
+            
+            <button class="btn" data-num="4">4</button>
+            <button class="btn" data-num="5">5</button>
+            <button class="btn" data-num="6">6</button>
+            <button class="btn btn-operator" data-num="+">+</button>
+            
+            <button class="btn" data-num="1">1</button>
+            <button class="btn" data-num="2">2</button>
+            <button class="btn" data-num="3">3</button>
+            <button class="btn btn-equal">=</button>
+            
+            <button class="btn zero" data-num="0">0</button>
+            <button class="btn" data-num=".">.</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
