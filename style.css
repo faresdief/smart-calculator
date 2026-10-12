@@ -1,88 +1,569 @@
-* {
-    margin: 0;
-    padding: 0;
+/* ==========================================================================
+   الحاسبة الذكية — Smart Calculator
+   Glassmorphism، ثيم داكن/فاتح، RTL/LTR، متجاوب من 320px
+   ========================================================================== */
+
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url('assets/fonts/poppins-Regular.woff') format('woff');
+}
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+    src: url('assets/fonts/poppins-Medium.woff') format('woff');
+}
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    src: url('assets/fonts/poppins-Bold.woff') format('woff');
+}
+
+/* ---------- ألوان ---------- */
+:root {
+    color-scheme: dark;
+    --bg-1: #0b1220;
+    --bg-2: #111c33;
+    --bg-3: #1b2a47;
+    --blob-a: rgba(56, 189, 248, 0.28);
+    --blob-b: rgba(129, 140, 248, 0.26);
+    --card: rgba(255, 255, 255, 0.06);
+    --card-border: rgba(255, 255, 255, 0.14);
+    --panel: rgba(12, 19, 36, 0.985);
+    --shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    --text: #f8fafc;
+    --muted: #a3b2c7;
+    --display-bg: rgba(0, 0, 0, 0.24);
+    --key: rgba(255, 255, 255, 0.08);
+    --key-hover: rgba(255, 255, 255, 0.16);
+    --key-active: rgba(255, 255, 255, 0.26);
+    --key-border: rgba(255, 255, 255, 0.09);
+    --accent: #38bdf8;
+    --accent-strong: #7dd3fc;
+    --on-accent: #06202e;
+    --op-bg: rgba(56, 189, 248, 0.15);
+    --danger: #fda4af;
+    --focus: #7dd3fc;
+}
+
+:root[data-theme='light'] {
+    color-scheme: light;
+    --bg-1: #e6edfb;
+    --bg-2: #f4f7fd;
+    --bg-3: #dbe6fb;
+    --blob-a: rgba(14, 165, 233, 0.3);
+    --blob-b: rgba(99, 102, 241, 0.22);
+    --card: rgba(255, 255, 255, 0.6);
+    --card-border: rgba(255, 255, 255, 0.95);
+    --panel: rgba(247, 250, 255, 0.985);
+    --shadow: 0 25px 60px rgba(30, 58, 138, 0.18);
+    --text: #0f172a;
+    --muted: #475569;
+    --display-bg: rgba(255, 255, 255, 0.7);
+    --key: rgba(255, 255, 255, 0.78);
+    --key-hover: #ffffff;
+    --key-active: #dbe5f5;
+    --key-border: rgba(15, 23, 42, 0.09);
+    --accent: #0369a1;
+    --accent-strong: #075985;
+    --on-accent: #ffffff;
+    --op-bg: rgba(3, 105, 161, 0.1);
+    --danger: #be123c;
+    --focus: #0369a1;
+}
+
+/* ---------- أساسيات ---------- */
+*,
+*::before,
+*::after {
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: 0;
     min-height: 100vh;
-    background: linear-gradient(45deg, #0f172a, #1e293b, #334155);
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+    background: linear-gradient(135deg, var(--bg-1), var(--bg-2) 55%, var(--bg-3));
+    color: var(--text);
+    font-family: 'Poppins', 'Segoe UI', Tahoma, 'Noto Sans Arabic', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.3s;
 }
 
+/* بقع ضوء خلف الزجاج لتظهر خاصية الـ blur */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    z-index: -1;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    filter: blur(70px);
+    pointer-events: none;
+}
+body::before {
+    top: -80px;
+    inset-inline-start: -60px;
+    background: var(--blob-a);
+}
+body::after {
+    bottom: -90px;
+    inset-inline-end: -60px;
+    background: var(--blob-b);
+}
+
+[hidden] {
+    display: none !important;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+}
+
+svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.noscript {
+    text-align: center;
+    color: var(--danger);
+}
+
+/* ---------- البطاقة ---------- */
 .calculator {
     position: relative;
-    width: 350px;
-    padding: 30px 20px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(15px);
+    width: min(100%, 380px);
+    padding: 16px;
+    border-radius: 28px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+    overflow: hidden;
 }
 
-.screen {
-    width: 100%;
-    height: 70px;
-    border: none;
-    outline: none;
-    font-size: 2rem;
-    color: #fff;
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .calculator {
+        background: var(--panel);
+    }
+}
+
+/* ---------- شريط الأدوات ---------- */
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.icon-btn-text {
+    padding: 0 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.icon-btn[aria-pressed='true'],
+.icon-btn[aria-expanded='true'] {
+    background: var(--op-bg);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.icon-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+@media (hover: hover) {
+    .icon-btn:not(:disabled):hover {
+        background: var(--key-hover);
+        color: var(--text);
+    }
+}
+
+/* أيقونة الثيم: القمر في الداكن (للتحويل للفاتح نعرض الشمس) */
+:root[data-theme='dark'] .icon-moon,
+:root[data-theme='light'] .icon-sun {
+    display: none;
+}
+
+/* ---------- شاشة العرض ---------- */
+.display {
+    position: relative;
+    margin: 12px 0;
+    padding: 14px 16px 12px;
+    min-height: 116px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 2px;
+    border-radius: 18px;
+    background: var(--display-bg);
+    border: 1px solid var(--key-border);
+    direction: ltr;
     text-align: right;
-    padding-right: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    margin-bottom: 25px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.buttons {
+.copy-btn {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    min-width: 34px;
+    height: 34px;
+    border-radius: 10px;
+}
+.copy-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.expr {
+    min-height: 1.6em;
+    padding-left: 40px;
+    font-size: 1rem;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.expr::-webkit-scrollbar {
+    display: none;
+}
+
+.result {
+    display: block;
+    min-height: 1.2em;
+    font-size: 2.7rem;
+    font-weight: 500;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    font-variant-numeric: tabular-nums;
+}
+
+.result.is-error {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: var(--danger);
+    white-space: normal;
+    padding-bottom: 4px;
+}
+
+/* ---------- الأزرار ---------- */
+.keys {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    gap: 10px;
+}
+
+.sci {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
 }
 
 .btn {
-    padding: 18px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    font-size: 1.25rem;
-    color: #fff;
-    background: rgba(255, 255, 255, 0.05);
+    min-height: 58px;
+    padding: 0;
+    border: 1px solid var(--key-border);
+    border-radius: 16px;
+    background: var(--key);
+    color: var(--text);
+    font-size: 1.3rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: 0.2s;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background-color 0.15s, transform 0.08s;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
-.btn:hover {
-    background: rgba(255, 255, 255, 0.15);
+.btn svg {
+    width: 24px;
+    height: 24px;
 }
 
-.btn-operator, .btn-clear, .btn-delete {
-    color: #38bdf8;
-    font-weight: 600;
+@media (hover: hover) {
+    .btn:hover {
+        background: var(--key-hover);
+    }
+}
+
+.btn:active,
+.btn.pressed {
+    background: var(--key-active);
+    transform: scale(0.96);
+}
+
+.btn-operator,
+.btn-delete {
+    background: var(--op-bg);
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.btn-clear {
+    background: var(--op-bg);
+    color: var(--danger);
+    font-weight: 700;
 }
 
 .btn-equal {
-    grid-row: span 2;
-    background: rgba(56, 189, 248, 0.2);
-    color: #38bdf8;
-    font-weight: bold;
+    background: var(--accent);
+    border-color: transparent;
+    color: var(--on-accent);
+    font-weight: 700;
+}
+@media (hover: hover) {
+    .btn-equal:hover {
+        background: var(--accent-strong);
+    }
+}
+.btn-equal:active,
+.btn-equal.pressed {
+    background: var(--accent-strong);
+}
+
+.btn-sci {
+    min-height: 44px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+}
+.btn-sci sup {
+    font-size: 0.65em;
+}
+.btn-toggle[aria-pressed='true'] {
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+/* ---------- لوحة السجل ---------- */
+.history {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    padding: 16px;
+    background: var(--panel);
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+    animation: slide-up 0.22s ease-out;
+}
+
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+}
+
+.history-head {
+    display: flex;
     align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.history-head h2 {
+    margin: 0;
+    font-size: 1.1rem;
 }
 
-.btn-equal:hover {
-    background: rgba(56, 189, 248, 0.4);
+.history-empty {
+    margin: 32px 8px;
+    text-align: center;
+    color: var(--muted);
 }
 
-.zero {
-    grid-column: span 2;
+.history-list {
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.history-list li {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--key-border);
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+.h-btn {
+    display: block;
+    width: 100%;
+    padding: 4px 8px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    text-align: right;
+    cursor: pointer;
+    overflow-wrap: anywhere;
+}
+.h-expr {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+.h-res {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--text);
+}
+@media (hover: hover) {
+    .h-btn:hover {
+        background: var(--key-hover);
+    }
+}
+
+/* ---------- تنبيه صغير ---------- */
+.toast {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 14px;
+    z-index: 10;
+    width: max-content;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+}
+.toast.show {
+    opacity: 1;
+    transform: none;
+}
+
+/* ---------- إتاحة الاستخدام ---------- */
+:focus {
+    outline: none;
+}
+:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+}
+
+/* ---------- شاشات صغيرة ---------- */
+@media (max-width: 380px) {
+    .calculator {
+        padding: 12px;
+        border-radius: 22px;
+    }
+    .keys {
+        gap: 8px;
+    }
+    .sci {
+        gap: 6px;
+    }
+    .btn {
+        min-height: 52px;
+        font-size: 1.2rem;
+        border-radius: 14px;
+    }
+    .btn-sci {
+        min-height: 40px;
+        font-size: 0.85rem;
+    }
+    .icon-btn {
+        min-width: 36px;
+        height: 36px;
+    }
+    .icon-btn-text {
+        padding: 0 7px;
+        font-size: 0.72rem;
+    }
+    .toolbar,
+    .toolbar-group {
+        gap: 4px;
+    }
+    .result {
+        font-size: 2.3rem;
+    }
+}
+
+/* شاشات قصيرة (موبايل بالعرض) */
+@media (max-height: 640px) {
+    .btn {
+        min-height: 46px;
+    }
+    .display {
+        min-height: 96px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
 }
