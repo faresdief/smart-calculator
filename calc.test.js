@@ -1,8 +1,8 @@
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const Calc = require('../calc.js');
-const State = require('../state.js');
+   const Calc = require('./calc.js');
+   const State = require('./state.js');
 
 const ev = (expr, angle = 'deg') => Calc.evaluate(expr, { angle });
 const code = (expr, angle = 'deg') => {
