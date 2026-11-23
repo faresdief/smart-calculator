@@ -55,7 +55,7 @@ jobs:
           cp index.html style.css calc.js state.js script.js sw.js manifest.webmanifest _site/
           cp -r assets _site/
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: '_site'
       - name: Deploy to GitHub Pages
