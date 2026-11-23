@@ -52,7 +52,8 @@ jobs:
       - name: Prepare site (only the files the website needs)
         run: |
           mkdir _site
-          cp index.html style.css calc.js state.js script.js sw.js manifest.webmanifest icon.svg *.png *.woff _site/
+          cp index.html style.css calc.js state.js script.js sw.js manifest.webmanifest _site/
+          cp -r assets _site/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
