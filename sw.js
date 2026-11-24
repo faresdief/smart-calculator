@@ -2,7 +2,7 @@
  * sw.js — Service Worker: يخزّن ملفات التطبيق ليعمل بدون إنترنت.
  * ⚠️ غيّر VERSION عند كل تحديث للملفات حتى يحصل المستخدمون على النسخة الجديدة.
  */
-const VERSION = 'v2.1.0';
+const VERSION = 'v2.1.1';
 const CACHE = `smart-calculator-${VERSION}`;
 
 const APP_SHELL = [
@@ -12,7 +12,6 @@ const APP_SHELL = [
     'calc.js',
     'state.js',
     'script.js',
-    'converter.js',
     'manifest.webmanifest',
     'assets/fonts/poppins-Regular.woff',
     'assets/fonts/poppins-Medium.woff',
