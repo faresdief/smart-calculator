@@ -567,3 +567,21 @@ svg {
         transition: none !important;
     }
 }
+
+/* Unit converter: shares the calculator theme and never covers the keypad. */
+.converter { margin-top: 16px; border-top: 1px solid var(--card-border); }
+.converter summary { cursor: pointer; padding: 14px 2px; font-weight: 500; color: var(--accent-strong); }
+.converter-body { display: grid; gap: 12px; padding-bottom: 8px; }
+.converter label { display: grid; gap: 6px; font-size: 13px; min-width: 0; }
+.converter input, .converter select, .convert-swap {
+    font: inherit; color: var(--text); background: var(--display-bg);
+    border: 1px solid var(--card-border); border-radius: 10px;
+    width: 100%; min-width: 0; min-height: 44px; padding: 10px;
+}
+.converter select option { background: var(--panel); color: var(--text); }
+.converter-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.convert-swap { cursor: pointer; color: var(--accent-strong); background: var(--op-bg); }
+.converter small { color: var(--muted); line-height: 1.7; }
+#convert-result { display: block; padding: 12px; border-radius: 10px; background: var(--display-bg); overflow-wrap: anywhere; font-size: 16px; }
+#convert-result.is-error { color: var(--danger); font-size: 13px; }
+.keyboard-hint { color: var(--muted); font-size: 10px; text-align: center; direction: ltr; margin: 12px 0 0; }
