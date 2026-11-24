@@ -199,5 +199,64 @@
     }
   }
 
-  return { MAX_LEN, FUNCS, initialState, press, view, isPlainNumber, deleteLast };
+  /* ------------------------------------------------------------------ */
+  /* الذاكرة (M+ / M- / MR / MC) — منطق نقي بدون DOM                     */
+  /* ------------------------------------------------------------------ */
+
+  /** القيمة الظاهرة حالياً كنص خام صالح للحفظ في الذاكرة، أو null عند خطأ. */
+  function memoryOperand(state, ctx = {}) {
+    const v = view(state, ctx);
+    if (v.error || v.raw === '') return null;
+    return Number.isFinite(Number(v.raw)) ? v.raw : null;
+  }
+
+  /**
+   * عمليات الذاكرة. memory رقم محفوظ أو null (فارغة).
+   * key: mem_add | mem_sub | mem_recall | mem_clear
+   * ترجع { state, memory } — الحالة لا تتغير إلا في الاسترجاع.
+   */
+  function memoryApply(state, key, memory, ctx = {}) {
+    if (key === 'mem_clear') return { state, memory: null };
+
+    if (key === 'mem_add' || key === 'mem_sub') {
+      const raw = memoryOperand(state, ctx);
+      if (raw === null) return { state, memory };
+      const delta = Number(raw);
+      // formatResult ينظّف أخطاء الفاصلة العائمة (0.1+0.2) مع كل خطوة
+      const next = Number(Calc.formatResult((memory || 0) + (key === 'mem_add' ? delta : -delta)));
+      if (!Number.isFinite(next)) return { state, memory };
+      return { state, memory: next };
+    }
+
+    if (key === 'mem_recall') {
+      if (memory === null || !Number.isFinite(memory)) return { state, memory };
+      const text = Calc.formatResult(memory);
+      let s = { ...state, error: null };
+      if (s.done) s = { ...s, expr: '', done: false, lastExpr: '' };
+      let e = s.expr;
+      if (OPERAND_END.test(e)) e += '*'; // ضرب ضمني مثل إدخال رقم بعد قيمة
+      if (e.length + text.length > MAX_LEN) return { state, memory };
+      return { state: { ...s, expr: e + text }, memory };
+    }
+
+    return { state, memory };
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* تصدير السجل — نص نقي بدون DOM                                        */
+  /* ------------------------------------------------------------------ */
+
+  /**
+   * ينسّق السجل كملف نصي: سطر ترويسة اختياري ثم "التعبير = النتيجة" لكل عملية.
+   * يتجاهل الإدخالات المعطوبة. بدون عمليات يرجع الترويسة فقط (أو نصاً فارغاً).
+   */
+  function exportHistoryText(items, header = '') {
+    const lines = (Array.isArray(items) ? items : [])
+      .filter((x) => x && typeof x.expr === 'string' && typeof x.result === 'string')
+      .map((x) => `${Calc.formatExpression(x.expr)} = ${x.result}`);
+    const out = header ? [header, ''].concat(lines) : lines;
+    return out.length ? out.join('\n') + '\n' : '';
+  }
+
+  return { MAX_LEN, FUNCS, initialState, press, view, isPlainNumber, deleteLast, memoryOperand, memoryApply, exportHistoryText };
 });
