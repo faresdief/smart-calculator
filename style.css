@@ -247,7 +247,8 @@ svg {
     border-radius: 10px;
 }
 .copy-btn svg,
-.share-btn svg {
+.share-btn svg,
+.fav-btn svg {
     width: 18px;
     height: 18px;
 }
@@ -262,7 +263,7 @@ svg {
 
 .expr {
     min-height: 1.6em;
-    padding-left: 80px;
+    padding-left: 120px;
     padding-right: 34px;
     font-size: 1rem;
     color: var(--muted);
@@ -722,3 +723,66 @@ svg {
 #date-result .date-main { display: block; font-size: 1.15rem; font-weight: 500; color: var(--text); }
 #date-result .date-sub { display: block; font-size: 13px; color: var(--muted); }
 #date-result.is-error { color: var(--danger); font-size: 13px; }
+
+/* ---------- النسب والمفضلة والصوت ---------- */
+#percent { margin-top: 0; }
+#pct-result { display: block; padding: 12px; border-radius: 10px; background: var(--display-bg); overflow-wrap: anywhere; font-size: 16px; line-height: 1.7; }
+#pct-result .date-main { display: block; font-size: 1.15rem; font-weight: 500; color: var(--text); }
+#pct-result .date-sub { display: block; font-size: 13px; color: var(--muted); }
+#pct-result.is-error { color: var(--danger); font-size: 13px; }
+
+.fav-btn {
+    position: absolute;
+    top: 6px;
+    left: 86px;
+    min-width: 34px;
+    height: 34px;
+    border-radius: 10px;
+}
+.fav-btn[aria-pressed='true'] svg,
+.h-star[aria-pressed='true'] svg {
+    fill: currentColor;
+}
+
+.sound-mute { display: none; }
+#btn-sound[aria-pressed='false'] .sound-wave { display: none; }
+#btn-sound[aria-pressed='false'] .sound-mute { display: inline; }
+
+.history-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin: 0 0 8px;
+}
+.history-tab {
+    min-height: 40px;
+    padding: 0 10px;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--muted);
+    font-weight: 500;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+.history-tab[aria-selected='true'] {
+    background: var(--op-bg);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.history-list li {
+    position: relative;
+    padding-left: 44px;
+}
+.h-star {
+    position: absolute;
+    top: 50%;
+    left: 2px;
+    transform: translateY(-50%);
+    min-width: 36px;
+    height: 36px;
+}
+.h-star svg {
+    width: 18px;
+    height: 18px;
+}
