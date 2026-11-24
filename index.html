@@ -28,7 +28,9 @@
                 var get = function (k) { try { return localStorage.getItem('smartcalc.' + k); } catch (e) { return null; } };
                 var theme = get('theme') || (window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
                 var lang = get('lang') === 'en' ? 'en' : 'ar'; // اللغة الافتراضية: العربية — غيّرها هنا وفي script.js (DEFAULT_LANG)
+                var accent = get('accent'); // لون التمييز — غيّره من زر اللوحة في شريط الأدوات
                 root.setAttribute('data-theme', theme === 'light' ? 'light' : 'dark');
+                if (['blue', 'amber', 'rose', 'violet'].indexOf(accent) !== -1) root.setAttribute('data-accent', accent);
                 root.lang = lang;
                 root.dir = lang === 'ar' ? 'rtl' : 'ltr';
             } catch (e) { /* ignore */ }
@@ -50,6 +52,9 @@
                     <button type="button" class="icon-btn icon-btn-text" id="btn-angle">DEG</button>
                 </div>
                 <div class="toolbar-group">
+                    <button type="button" class="icon-btn" id="btn-accent" aria-expanded="false" aria-controls="accent-panel" data-i18n-label="accent">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-.9 2-1.8 0-.9-.7-1.5-.7-2.4 0-1 .8-1.8 1.9-1.8H17a4 4 0 0 0 4-4c0-4.4-4-8-9-8z"/><circle cx="7.5" cy="11.5" r="1.1"/><circle cx="10.5" cy="7.5" r="1.1"/><circle cx="15" cy="7.5" r="1.1"/></svg>
+                    </button>
                     <button type="button" class="icon-btn icon-btn-text" id="btn-digits" aria-pressed="false" data-i18n-label="digits">١٢٣</button>
                     <button type="button" class="icon-btn icon-btn-text" id="btn-lang">EN</button>
                     <button type="button" class="icon-btn" id="btn-theme">
@@ -64,6 +69,7 @@
                 <button type="button" class="icon-btn copy-btn" id="btn-copy" data-i18n-label="copy">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
                 </button>
+                <span class="mem-indicator" id="mem-indicator" data-i18n-label="memory_on" hidden>M</span>
                 <div class="expr" id="expr"></div>
                 <output class="result" id="result" aria-live="polite" aria-atomic="true">0</output>
             </section>
@@ -87,6 +93,14 @@
                 <button type="button" class="btn btn-sci" data-key="!" data-i18n-label="fact">n!</button>
                 <button type="button" class="btn btn-sci" data-key="inv" data-i18n-label="inv">1/x</button>
                 <button type="button" class="btn btn-sci" data-key="e" data-i18n-label="euler">e</button>
+            </div>
+
+            <!-- أزرار الذاكرة -->
+            <div class="memory" dir="ltr">
+                <button type="button" class="btn btn-mem" data-mem="mem_clear" data-i18n-label="mc">MC</button>
+                <button type="button" class="btn btn-mem" data-mem="mem_recall" data-i18n-label="mr">MR</button>
+                <button type="button" class="btn btn-mem" data-mem="mem_sub" data-i18n-label="m_minus">M&minus;</button>
+                <button type="button" class="btn btn-mem" data-mem="mem_add" data-i18n-label="m_plus">M+</button>
             </div>
 
             <!-- لوحة الأرقام -->
@@ -149,6 +163,9 @@
                 <header class="history-head">
                     <h2 data-i18n="history">السجل</h2>
                     <div class="toolbar-group">
+                        <button type="button" class="icon-btn" id="btn-history-export" data-i18n-label="history_export">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
+                        </button>
                         <button type="button" class="icon-btn" id="btn-history-clear" data-i18n-label="history_clear">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>
                         </button>
@@ -160,6 +177,15 @@
                 <p class="history-empty" id="history-empty" data-i18n="history_empty">لا توجد عمليات سابقة بعد.</p>
                 <ol class="history-list" id="history-list"></ol>
             </aside>
+
+            <!-- لوحة اختيار لون التمييز -->
+            <div class="accent-panel" id="accent-panel" role="group" data-i18n-label="accent" hidden>
+                <button type="button" class="icon-btn swatch" data-accent-choice="green" data-i18n-label="accent_green"><span class="dot dot-green" aria-hidden="true"></span></button>
+                <button type="button" class="icon-btn swatch" data-accent-choice="blue" data-i18n-label="accent_blue"><span class="dot dot-blue" aria-hidden="true"></span></button>
+                <button type="button" class="icon-btn swatch" data-accent-choice="amber" data-i18n-label="accent_amber"><span class="dot dot-amber" aria-hidden="true"></span></button>
+                <button type="button" class="icon-btn swatch" data-accent-choice="rose" data-i18n-label="accent_rose"><span class="dot dot-rose" aria-hidden="true"></span></button>
+                <button type="button" class="icon-btn swatch" data-accent-choice="violet" data-i18n-label="accent_violet"><span class="dot dot-violet" aria-hidden="true"></span></button>
+            </div>
 
             <div class="toast" id="toast" role="status" aria-live="polite"></div>
         </section>

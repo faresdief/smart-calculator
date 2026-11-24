@@ -11,6 +11,7 @@
     const DEFAULT_LANG = 'ar';
     const HISTORY_LIMIT = 50;
     const STORE_PREFIX = 'smartcalc.';
+    const ACCENTS = ['green', 'blue', 'amber', 'rose', 'violet'];
 
     /* ------------------------------------------------------------------ */
     /* النصوص (عربي / English)                                            */
@@ -27,6 +28,20 @@
             theme_light: 'التبديل إلى الوضع الفاتح',
             theme_dark: 'التبديل إلى الوضع الداكن',
             copy: 'نسخ النتيجة',
+            mc: 'مسح الذاكرة',
+            mr: 'استرجاع الذاكرة',
+            m_plus: 'إضافة إلى الذاكرة',
+            m_minus: 'طرح من الذاكرة',
+            memory_on: 'توجد قيمة محفوظة في الذاكرة',
+            accent: 'لون التمييز',
+            accent_green: 'أخضر (افتراضي)',
+            accent_blue: 'أزرق',
+            accent_amber: 'رملي',
+            accent_rose: 'وردي',
+            accent_violet: 'بنفسجي',
+            history_export: 'تصدير السجل كملف نصي',
+            history_exported: 'تم تصدير السجل',
+            export_empty: 'لا توجد عمليات للتصدير',
             clear: 'مسح الكل',
             del: 'حذف',
             percent: 'نسبة مئوية',
@@ -84,6 +99,20 @@
             theme_light: 'Switch to light mode',
             theme_dark: 'Switch to dark mode',
             copy: 'Copy result',
+            mc: 'Memory clear',
+            mr: 'Memory recall',
+            m_plus: 'Add to memory',
+            m_minus: 'Subtract from memory',
+            memory_on: 'A value is stored in memory',
+            accent: 'Accent color',
+            accent_green: 'Green (default)',
+            accent_blue: 'Blue',
+            accent_amber: 'Amber',
+            accent_rose: 'Rose',
+            accent_violet: 'Violet',
+            history_export: 'Export history as a text file',
+            history_exported: 'History exported',
+            export_empty: 'Nothing to export yet',
             clear: 'Clear all',
             del: 'Backspace',
             percent: 'Percent',
@@ -168,6 +197,7 @@
         digits: store.get('digits', 'latin') === 'arabic' ? 'arabic' : 'latin',
         angle: store.get('angle', 'deg') === 'rad' ? 'rad' : 'deg',
         sci: store.get('sci', '0') === '1',
+        accent: ACCENTS.includes(store.get('accent', 'green')) ? store.get('accent', 'green') : 'green',
         inv: false
     };
 
@@ -192,6 +222,10 @@
         historyEmpty: $('#history-empty'),
         historyClear: $('#btn-history-clear'),
         historyClose: $('#btn-history-close'),
+        historyExport: $('#btn-history-export'),
+        btnAccent: $('#btn-accent'),
+        accentPanel: $('#accent-panel'),
+        memIndicator: $('#mem-indicator'),
         toast: $('#toast'),
         themeColor: $('meta[name="theme-color"]')
     };
@@ -280,7 +314,7 @@
 
     // اهتزاز خفيف على اللمس
     els.calculator.addEventListener('pointerdown', (e) => {
-        if (e.pointerType === 'touch' && e.target.closest('[data-key]') && navigator.vibrate) {
+        if (e.pointerType === 'touch' && e.target.closest('[data-key], [data-mem]') && navigator.vibrate) {
             try {
                 navigator.vibrate(8);
             } catch (err) {
@@ -410,6 +444,80 @@
     });
 
     /* ------------------------------------------------------------------ */
+    /* الذاكرة (M+ / M- / MR / MC) — محفوظة محلياً مثل بقية الإعدادات       */
+    /* ------------------------------------------------------------------ */
+    let memory = loadMemory();
+
+    function loadMemory() {
+        const raw = store.get('memory', '');
+        if (raw === '') return null;
+        const n = Number(raw);
+        return Number.isFinite(n) ? n : null;
+    }
+
+    function saveMemory() {
+        store.set('memory', memory === null ? '' : String(memory));
+    }
+
+    function renderMemory() {
+        els.memIndicator.hidden = memory === null;
+    }
+
+    $$('[data-mem]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            const applied = State.memoryApply(calc, btn.dataset.mem, memory, { angle: settings.angle });
+            calc = applied.state;
+            memory = applied.memory;
+            saveMemory();
+            renderMemory();
+            render();
+            if (e.detail > 0) btn.blur();
+        });
+    });
+
+    /* ------------------------------------------------------------------ */
+    /* لون التمييز — باليت صغيرة ثابتة تحفظ الاختيار محلياً                 */
+    /* ------------------------------------------------------------------ */
+    function applyAccent() {
+        if (settings.accent === 'green') root.removeAttribute('data-accent');
+        else root.setAttribute('data-accent', settings.accent);
+        $$('[data-accent-choice]', els.accentPanel).forEach((b) => {
+            b.setAttribute('aria-pressed', String(b.dataset.accentChoice === settings.accent));
+        });
+    }
+
+    function openAccent() {
+        els.accentPanel.hidden = false;
+        els.btnAccent.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeAccent() {
+        els.accentPanel.hidden = true;
+        els.btnAccent.setAttribute('aria-expanded', 'false');
+    }
+
+    els.btnAccent.addEventListener('click', () => (els.accentPanel.hidden ? openAccent() : closeAccent()));
+    els.accentPanel.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-accent-choice]');
+        if (!btn) return;
+        settings.accent = btn.dataset.accentChoice;
+        store.set('accent', settings.accent);
+        applyAccent();
+        closeAccent();
+        els.btnAccent.focus();
+    });
+    document.addEventListener('click', (e) => {
+        if (!els.accentPanel.hidden && !(e.target.closest && (e.target.closest('#accent-panel') || e.target.closest('#btn-accent')))) closeAccent();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !els.accentPanel.hidden) {
+            e.stopPropagation();
+            closeAccent();
+            els.btnAccent.focus();
+        }
+    });
+
+    /* ------------------------------------------------------------------ */
     /* السجل                                                               */
     /* ------------------------------------------------------------------ */
     function loadHistory() {
@@ -441,6 +549,7 @@
         els.historyList.textContent = '';
         els.historyEmpty.hidden = history.length > 0;
         els.historyClear.disabled = history.length === 0;
+        els.historyExport.disabled = history.length === 0;
         history.forEach((item, i) => {
             const li = document.createElement('li');
             li.dir = 'ltr'; // الأرقام والعمليات دائماً من اليسار لليمين حتى في الواجهة العربية
@@ -467,6 +576,7 @@
     }
 
     function openHistory() {
+        closeAccent();
         renderHistory();
         els.history.hidden = false;
         els.btnHistory.setAttribute('aria-expanded', 'true');
@@ -488,6 +598,24 @@
         saveHistory();
         renderHistory();
         toast(t('history_cleared'));
+    });
+    els.historyExport.addEventListener('click', () => {
+        if (history.length === 0) {
+            toast(t('export_empty'));
+            return;
+        }
+        const date = new Date().toISOString().slice(0, 10);
+        const header = t('title') + ' — ' + t('history') + ' (' + date + ')';
+        const blob = new Blob([State.exportHistoryText(history, header)], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'smart-calculator-history-' + date + '.txt';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+        toast(t('history_exported'));
     });
     els.historyList.addEventListener('click', (e) => {
         const btn = e.target.closest('button[data-index]');
@@ -624,6 +752,8 @@
     applyDigits();
     applySci();
     setInv(false);
+    applyAccent();
+    renderMemory();
     render();
 
     // PWA: يعمل بدون إنترنت بعد أول زيارة (فقط عبر http/https)
