@@ -28,6 +28,32 @@
             theme_light: 'التبديل إلى الوضع الفاتح',
             theme_dark: 'التبديل إلى الوضع الداكن',
             copy: 'نسخ النتيجة',
+            share: 'مشاركة النتيجة كصورة',
+            share_failed: 'تعذّر إنشاء الصورة',
+            share_saved: 'تم حفظ صورة النتيجة',
+            history_search: 'ابحث في السجل',
+            history_nomatch: 'لا توجد نتائج مطابقة.',
+            dates_title: 'حاسبة التواريخ',
+            dates_mode: 'نوع الحساب',
+            dates_diff: 'الفرق بين تاريخين',
+            dates_add: 'إضافة أيام لتاريخ',
+            dates_sub: 'طرح أيام من تاريخ',
+            dates_from: 'من تاريخ',
+            dates_to: 'إلى تاريخ',
+            dates_date: 'التاريخ',
+            dates_days: 'عدد الأيام',
+            dates_wait: 'اختر التواريخ لعرض النتيجة',
+            dates_invalid: 'أدخل تاريخًا صحيحًا',
+            dates_days_invalid: 'أدخل عدد أيام صحيحًا (حتى 1,000,000)',
+            dates_range: 'النتيجة خارج النطاق المدعوم (السنوات 1 إلى 9999)',
+            dates_second_earlier: 'التاريخ الثاني أسبق من الأول',
+            dates_total: 'المجموع',
+            dates_and: ' و ',
+            dates_sep: '، ',
+            unit_day: ['يوم', 'يومان', 'أيام', 'يومًا'],
+            unit_week: ['أسبوع', 'أسبوعان', 'أسابيع', 'أسبوعًا'],
+            unit_month: ['شهر', 'شهران', 'أشهر', 'شهرًا'],
+            unit_year: ['سنة', 'سنتان', 'سنوات', 'سنة'],
             mc: 'مسح الذاكرة',
             mr: 'استرجاع الذاكرة',
             m_plus: 'إضافة إلى الذاكرة',
@@ -99,6 +125,32 @@
             theme_light: 'Switch to light mode',
             theme_dark: 'Switch to dark mode',
             copy: 'Copy result',
+            share: 'Share result as an image',
+            share_failed: 'Could not create the image',
+            share_saved: 'Result image saved',
+            history_search: 'Search history',
+            history_nomatch: 'No matching calculations.',
+            dates_title: 'Date calculator',
+            dates_mode: 'Calculation',
+            dates_diff: 'Difference between two dates',
+            dates_add: 'Add days to a date',
+            dates_sub: 'Subtract days from a date',
+            dates_from: 'From date',
+            dates_to: 'To date',
+            dates_date: 'Date',
+            dates_days: 'Number of days',
+            dates_wait: 'Pick dates to see the result',
+            dates_invalid: 'Enter a valid date',
+            dates_days_invalid: 'Enter a whole number of days (up to 1,000,000)',
+            dates_range: 'Result is outside the supported range (years 1 to 9999)',
+            dates_second_earlier: 'The second date is earlier than the first',
+            dates_total: 'Total',
+            dates_and: ' and ',
+            dates_sep: ', ',
+            unit_day: ['day', 'days'],
+            unit_week: ['week', 'weeks'],
+            unit_month: ['month', 'months'],
+            unit_year: ['year', 'years'],
             mc: 'Memory clear',
             mr: 'Memory recall',
             m_plus: 'Add to memory',
@@ -209,6 +261,7 @@
         expr: $('#expr'),
         result: $('#result'),
         copy: $('#btn-copy'),
+        share: $('#btn-share'),
         sci: $('#sci'),
         btnSci: $('#btn-sci'),
         btn2nd: $('#btn-2nd'),
@@ -223,13 +276,15 @@
         historyClear: $('#btn-history-clear'),
         historyClose: $('#btn-history-close'),
         historyExport: $('#btn-history-export'),
+        historySearch: $('#history-search'),
+        historyNoMatch: $('#history-nomatch'),
         btnAccent: $('#btn-accent'),
         accentPanel: $('#accent-panel'),
         memIndicator: $('#mem-indicator'),
         toast: $('#toast'),
         themeColor: $('meta[name="theme-color"]')
     };
-    const panelParts = () => [$('.toolbar'), $('.display'), els.sci, $('.keys'), $('#converter'), $('#keyboard-hint')];
+    const panelParts = () => [$('.toolbar'), $('.display'), els.sci, $('.keys'), $('#converter'), $('#dates'), $('#keyboard-hint')];
 
     const t = (key) => {
         const dict = STRINGS[settings.lang];
@@ -273,6 +328,7 @@
 
         els.copy.disabled = !v.raw;
         els.copy.dataset.raw = v.raw;
+        els.share.disabled = !v.raw;
     }
 
     let toastTimer = 0;
@@ -547,10 +603,14 @@
 
     function renderHistory() {
         els.historyList.textContent = '';
+        const matches = State.searchHistory(history, els.historySearch.value);
         els.historyEmpty.hidden = history.length > 0;
+        els.historySearch.hidden = history.length === 0;
+        els.historyNoMatch.hidden = history.length === 0 || matches.length > 0;
         els.historyClear.disabled = history.length === 0;
         els.historyExport.disabled = history.length === 0;
-        history.forEach((item, i) => {
+        matches.forEach((i) => {
+            const item = history[i];
             const li = document.createElement('li');
             li.dir = 'ltr'; // الأرقام والعمليات دائماً من اليسار لليمين حتى في الواجهة العربية
 
@@ -577,6 +637,7 @@
 
     function openHistory() {
         closeAccent();
+        els.historySearch.value = '';
         renderHistory();
         els.history.hidden = false;
         els.btnHistory.setAttribute('aria-expanded', 'true');
@@ -593,6 +654,17 @@
 
     els.btnHistory.addEventListener('click', () => (els.history.hidden ? openHistory() : closeHistory()));
     els.historyClose.addEventListener('click', closeHistory);
+    els.historySearch.addEventListener('input', renderHistory);
+    els.historySearch.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        e.preventDefault();
+        if (els.historySearch.value) {
+            els.historySearch.value = '';
+            renderHistory();
+        } else {
+            closeHistory();
+        }
+    });
     els.historyClear.addEventListener('click', () => {
         history = [];
         saveHistory();
@@ -630,6 +702,247 @@
         render();
         closeHistory();
     });
+
+    /* ------------------------------------------------------------------ */
+    /* مشاركة النتيجة كصورة (ألوان الثيم واللون المختار، خلفيات سادة)        */
+    /* ------------------------------------------------------------------ */
+    function fitText(ctx, text, weight, startSize, minSize, maxWidth) {
+        let size = startSize;
+        ctx.font = weight + ' ' + size + "px Poppins, 'Segoe UI', Tahoma, 'Noto Sans Arabic', sans-serif";
+        while (ctx.measureText(text).width > maxWidth && size > minSize) {
+            size -= 2;
+            ctx.font = weight + ' ' + size + "px Poppins, 'Segoe UI', Tahoma, 'Noto Sans Arabic', sans-serif";
+        }
+        return size;
+    }
+
+    async function buildShareImage() {
+        const v = State.view(calc, { angle: settings.angle });
+        if (v.error || !v.raw) return null;
+        try {
+            if (document.fonts && document.fonts.load) {
+                await Promise.all([document.fonts.load('500 64px Poppins'), document.fonts.load('400 32px Poppins')]);
+            }
+        } catch (err) {
+            /* الخط البديل كافٍ */
+        }
+        const cs = window.getComputedStyle(root);
+        const color = (name, fallback) => cs.getPropertyValue(name).trim() || fallback;
+        const W = 1080;
+        const H = 560;
+        const canvas = document.createElement('canvas');
+        canvas.width = W;
+        canvas.height = H;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return null;
+
+        ctx.fillStyle = color('--panel', '#1c201e');
+        ctx.fillRect(0, 0, W, H);
+
+        const x = 48;
+        const y = 48;
+        const w = W - 96;
+        const h = H - 96;
+        const rr = (px, py, pw, ph, r) => {
+            ctx.beginPath();
+            ctx.moveTo(px + r, py);
+            ctx.arcTo(px + pw, py, px + pw, py + ph, r);
+            ctx.arcTo(px + pw, py + ph, px, py + ph, r);
+            ctx.arcTo(px, py + ph, px, py, r);
+            ctx.arcTo(px, py, px + pw, py, r);
+            ctx.closePath();
+        };
+        rr(x, y, w, h, 36);
+        ctx.fillStyle = color('--display-bg', '#141816');
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = color('--key-border', '#3a443c');
+        ctx.stroke();
+
+        const pad = 56;
+        const maxW = w - pad * 2;
+        ctx.direction = 'ltr';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'alphabetic';
+        const right = x + w - pad;
+
+        const top = loc(v.top);
+        if (top) {
+            fitText(ctx, top, 400, 44, 22, maxW);
+            ctx.fillStyle = color('--muted', '#b0bab2');
+            ctx.fillText(top, right, y + 132);
+        }
+        const main = loc(v.main);
+        fitText(ctx, main, 500, 156, 40, maxW);
+        ctx.fillStyle = color('--text', '#f1f3ef');
+        ctx.fillText(main, right, y + 290);
+
+        // شريط سادة بلون التمييز + اسم التطبيق
+        ctx.fillStyle = color('--accent', '#b6d8bf');
+        rr(x + pad, y + h - 84, 56, 8, 4);
+        ctx.fill();
+        ctx.textAlign = 'left';
+        ctx.direction = settings.lang === 'ar' ? 'rtl' : 'ltr';
+        fitText(ctx, t('title'), 500, 30, 18, maxW);
+        ctx.fillStyle = color('--accent-strong', '#c9e5d0');
+        if (settings.lang === 'ar') {
+            ctx.textAlign = 'left';
+            ctx.direction = 'ltr';
+        }
+        ctx.fillText(t('title'), x + pad, y + h - 28);
+
+        return new Promise((resolve) => canvas.toBlob((b) => resolve(b), 'image/png'));
+    }
+
+    function downloadBlob(blob, name) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    let sharing = false;
+    els.share.addEventListener('click', async () => {
+        if (sharing) return;
+        sharing = true;
+        try {
+            const blob = await buildShareImage();
+            if (!blob) {
+                toast(t('share_failed'));
+                return;
+            }
+            const name = 'smart-calculator-result.png';
+            const file = typeof File === 'function' ? new File([blob], name, { type: 'image/png' }) : null;
+            if (file && navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
+                try {
+                    await navigator.share({ files: [file] });
+                    return;
+                } catch (err) {
+                    if (err && err.name === 'AbortError') return; // المستخدم أغلق نافذة المشاركة
+                }
+            }
+            downloadBlob(blob, name);
+            toast(t('share_saved'));
+        } catch (err) {
+            toast(t('share_failed'));
+        } finally {
+            sharing = false;
+        }
+    });
+
+    /* ------------------------------------------------------------------ */
+    /* حاسبة التواريخ                                                      */
+    /* ------------------------------------------------------------------ */
+    const dateEls = {
+        mode: $('#date-mode'),
+        a: $('#date-a'),
+        b: $('#date-b'),
+        n: $('#date-n'),
+        aLabel: $('#date-a-label'),
+        bGroup: $('#date-b-group'),
+        nGroup: $('#date-n-group'),
+        out: $('#date-result')
+    };
+
+    function todayISO() {
+        const d = new Date();
+        const p = (n) => String(n).padStart(2, '0');
+        return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+    }
+    dateEls.a.value = todayISO();
+    dateEls.b.value = todayISO();
+
+    /** عدد + اسم الوحدة بالمفرد/المثنى/الجمع حسب اللغة. */
+    function countText(n, unit) {
+        const forms = t('unit_' + unit);
+        const num = loc(Calc.groupDigits(String(n)));
+        if (settings.lang === 'en') return num + ' ' + (n === 1 ? forms[0] : forms[1]);
+        if (n === 2) return forms[1];
+        if (n >= 3 && n <= 10) return num + ' ' + forms[2];
+        if (n === 0 || n === 1) return num + ' ' + forms[0];
+        return num + ' ' + forms[3];
+    }
+
+    function joinParts(parts) {
+        if (parts.length < 2) return parts.join('');
+        if (settings.lang === 'en') {
+            return parts.length === 2 ? parts.join(t('dates_and')) : parts.slice(0, -1).join(t('dates_sep')) + t('dates_and') + parts[parts.length - 1];
+        }
+        return parts.join(t('dates_and'));
+    }
+
+    function longDate(r) {
+        try {
+            const d = new Date(0);
+            d.setUTCFullYear(r.y, r.m - 1, r.d);
+            const nu = settings.digits === 'arabic' ? 'arab' : 'latn';
+            const locale = (settings.lang === 'ar' ? 'ar-EG' : 'en-US') + '-u-ca-gregory-nu-' + nu;
+            return new Intl.DateTimeFormat(locale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(d);
+        } catch (err) {
+            return loc(r.date);
+        }
+    }
+
+    function dateLine(cls, text) {
+        const span = document.createElement('span');
+        span.className = cls;
+        span.textContent = text;
+        return span;
+    }
+
+    function renderDates() {
+        const mode = dateEls.mode.value;
+        const diff = mode === 'diff';
+        dateEls.bGroup.hidden = !diff;
+        dateEls.nGroup.hidden = diff;
+        dateEls.aLabel.textContent = t(diff ? 'dates_from' : 'dates_date');
+
+        const out = dateEls.out;
+        out.textContent = '';
+        out.classList.remove('is-error');
+        const fail = (key) => {
+            out.classList.add('is-error');
+            out.textContent = t(key);
+        };
+
+        if (!dateEls.a.value || (diff && !dateEls.b.value)) return fail('dates_wait');
+        if (diff) {
+            const r = State.dateDifference(dateEls.a.value, dateEls.b.value);
+            if (!r) return fail('dates_invalid');
+            out.appendChild(dateLine('date-main', countText(r.days, 'day')));
+            if (r.days >= 7) {
+                const parts = [countText(r.weeks, 'week')];
+                if (r.restDays) parts.push(countText(r.restDays, 'day'));
+                out.appendChild(dateLine('date-sub', joinParts(parts)));
+            }
+            if (r.years || r.months) {
+                const parts = [];
+                if (r.years) parts.push(countText(r.years, 'year'));
+                if (r.months) parts.push(countText(r.months, 'month'));
+                if (r.restMonthDays) parts.push(countText(r.restMonthDays, 'day'));
+                out.appendChild(dateLine('date-sub', joinParts(parts)));
+            }
+            if (r.negative) out.appendChild(dateLine('date-sub', t('dates_second_earlier')));
+            return;
+        }
+        if (!State.parseDate(dateEls.a.value)) return fail('dates_invalid');
+        if (dateEls.n.value.trim() === '') return fail('dates_wait');
+        const count = State.parseDayCount(dateEls.n.value);
+        if (count === null) return fail('dates_days_invalid');
+        const r = State.addDays(dateEls.a.value, count, mode === 'sub' ? -1 : 1);
+        if (!r) return fail('dates_range');
+        out.appendChild(dateLine('date-main', longDate(r)));
+    }
+
+    [dateEls.mode, dateEls.a, dateEls.b].forEach((el) => {
+        el.addEventListener('input', renderDates);
+        el.addEventListener('change', renderDates);
+    });
+    dateEls.n.addEventListener('input', renderDates);
 
     /* ------------------------------------------------------------------ */
     /* الإعدادات: ثيم / لغة / أرقام / زوايا / وضع علمي                      */
@@ -685,12 +998,14 @@
             // تلميح عند التمرير للأزرار الصغيرة فقط
             if (el.classList.contains('icon-btn') || el.classList.contains('btn-sci')) el.title = t(k);
         });
+        els.historySearch.placeholder = t('history_search');
         els.btnLang.textContent = lang === 'ar' ? 'EN' : 'ع';
         els.btnLang.setAttribute('aria-label', t('lang'));
         els.btnLang.title = t('lang');
         els.btnLang.lang = lang === 'ar' ? 'en' : 'ar';
         applyTheme();
         applyAngle();
+        renderDates();
         if (!els.history.hidden) renderHistory();
     }
 
@@ -711,6 +1026,7 @@
         settings.digits = settings.digits === 'arabic' ? 'latin' : 'arabic';
         store.set('digits', settings.digits);
         applyDigits();
+        renderDates();
         if (!els.history.hidden) renderHistory();
         render();
     });
