@@ -195,7 +195,7 @@
         toast: $('#toast'),
         themeColor: $('meta[name="theme-color"]')
     };
-    const panelParts = () => [$('.toolbar'), $('.display'), els.sci, $('.keys')];
+    const panelParts = () => [$('.toolbar'), $('.display'), els.sci, $('.keys'), $('#converter'), $('#keyboard-hint')];
 
     const t = (key) => {
         const dict = STRINGS[settings.lang];
@@ -291,6 +291,7 @@
 
     function keyFromEvent(e) {
         const k = e.key;
+        if (/^[۰-۹]$/.test(k)) return String('۰۱۲۳۴۵۶۷۸۹'.indexOf(k));
         if (/^[0-9]$/.test(k)) return k;
         if (/^[٠-٩]$/.test(k)) return String('٠١٢٣٤٥٦٧٨٩'.indexOf(k));
         switch (k) {
@@ -332,6 +333,7 @@
 
     document.addEventListener('keydown', (e) => {
         if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return;
+        if (e.target.closest && e.target.closest('input, textarea, select, [contenteditable], summary')) return;
 
         if (!els.history.hidden) {
             if (e.key === 'Escape') {
@@ -366,7 +368,7 @@
     }
 
     document.addEventListener('paste', (e) => {
-        if (!els.history.hidden) return;
+        if (!els.history.hidden || (e.target.closest && e.target.closest('input, textarea, select, [contenteditable]'))) return;
         const data = e.clipboardData || window.clipboardData;
         if (!data) return;
         e.preventDefault();
