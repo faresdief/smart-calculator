@@ -101,3 +101,40 @@ test('exportHistoryText يحافظ على ترتيب السجل (الأحدث أ
     ];
     assert.ok(State.exportHistoryText(items).indexOf('9−1 = 8') < State.exportHistoryText(items).indexOf('1+1 = 2'));
 });
+
+/* ---------------- حاسبة النسب ---------------- */
+test('percentCalc: خصم وإكرامية وضريبة ونسب', () => {
+    assert.deepEqual(State.percentCalc('discount', '200', '15'), { saved: 30, final: 170 });
+    assert.deepEqual(State.percentCalc('discount', '٢٠٠', '١٥'), { saved: 30, final: 170 });
+    assert.equal(State.percentCalc('discount', '200', '101'), null);
+    assert.equal(State.percentCalc('discount', '-5', '10'), null);
+    assert.deepEqual(State.percentCalc('tip', '120.5', '12.5', '3'), { tip: 15.06, total: 135.56, people: 3, perPerson: 45.19 });
+    assert.equal(State.percentCalc('tip', '100', '10', '0'), null);
+    assert.equal(State.percentCalc('tip', '100', '10', '2.5'), null);
+    assert.equal(State.percentCalc('tip', '100', '10', '101'), null);
+    assert.equal(State.percentCalc('tip', '100', '10').people, 1);
+    assert.deepEqual(State.percentCalc('tax_add', '100', '14'), { tax: 14, total: 114 });
+    assert.deepEqual(State.percentCalc('tax_incl', '114', '14'), { net: 100, tax: 14 });
+    assert.deepEqual(State.percentCalc('what', '25', '200'), { percent: 12.5 });
+    assert.deepEqual(State.percentCalc('change', '80', '100'), { percent: 25 });
+    assert.deepEqual(State.percentCalc('change', '100', '80'), { percent: -20 });
+    assert.deepEqual(State.percentCalc('what', '5', '0'), { error: 'ZERO' });
+    assert.deepEqual(State.percentCalc('change', '0', '5'), { error: 'ZERO' });
+    for (const bad of ['', 'abc', '1e5', '1.2.3', '--1']) assert.equal(State.percentCalc('discount', bad, '10'), null);
+    assert.equal(State.percentCalc('unknown', '1', '1'), null);
+    assert.equal(State.percentCalc('tax_add', '1e13', '10'), null);
+});
+
+/* ---------------- المفضلة ---------------- */
+test('toggleFavorite: إضافة في الأول ثم حذف عند التكرار بدون تعديل الأصل', () => {
+    const base = [{ expr: '1+1', result: '2' }];
+    const a = State.toggleFavorite(base, { expr: '2*3', result: '6' });
+    assert.deepEqual(a.map((x) => x.result), ['6', '2']);
+    assert.equal(base.length, 1);
+    assert.deepEqual(State.toggleFavorite(a, { expr: '2*3', result: '6' }), base);
+    assert.equal(State.favoriteIndex(a, { expr: '1+1', result: '2' }), 1);
+    assert.equal(State.favoriteIndex(a, { expr: '1+1', result: '3' }), -1);
+    assert.equal(State.toggleFavorite(null, null).length, 0);
+    const many = Array.from({ length: 5 }, (_, i) => ({ expr: String(i), result: String(i) }));
+    assert.equal(State.toggleFavorite(many, { expr: 'x', result: 'y' }, 5).length, 5);
+});

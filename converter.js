@@ -7,7 +7,10 @@
     'use strict';
     const units = {
         length: { mm: 0.001, cm: 0.01, m: 1, km: 1000, in: 0.0254, ft: 0.3048, yd: 0.9144, mi: 1609.344 },
-        mass: { mg: 0.000001, g: 0.001, kg: 1, t: 1000, oz: 0.028349523125, lb: 0.45359237 }
+        mass: { mg: 0.000001, g: 0.001, kg: 1, t: 1000, oz: 0.028349523125, lb: 0.45359237 },
+        speed: { 'm/s': 1, 'km/h': 1 / 3.6, mph: 0.44704, kn: 1852 / 3600, 'ft/s': 0.3048 },
+        area: { 'mm²': 1e-6, 'cm²': 1e-4, 'm²': 1, 'km²': 1e6, ha: 1e4, 'in²': 0.00064516, 'ft²': 0.09290304, 'yd²': 0.83612736, acre: 4046.8564224, 'mi²': 2589988.110336, fed: 4200.83 },
+        data: { B: 1, KB: 1024, MB: 1048576, GB: 1073741824, TB: 1099511627776 }
     };
     function number(value) {
         if (typeof value !== 'string' && typeof value !== 'number') throw new Error('INVALID');
@@ -63,14 +66,14 @@ if (typeof document !== 'undefined') (function () {
     const $ = (id) => document.getElementById(id);
     const words = {
         ar: {
-            title: 'تحويل الوحدات', category: 'نوع التحويل', length: 'الطول', mass: 'الوزن', currency: 'العملات', amount: 'القيمة', from: 'من', to: 'إلى', swap: 'عكس الوحدات', rate: 'سعر الصرف', rateHint: 'حدّث السعر اليومي من الإنترنت أو اكتبه بنفسك. ليس سعرًا لحظيًا. تغيير العملات يمسح السعر. السعر الآلي يُرفض بعد 48 ساعة.', invalid: 'أدخل قيمة صحيحة وسعر صرف موجب عند الحاجة.', range: 'القيمة أكبر أو أصغر من النطاق المدعوم.', waiting: 'أدخل قيمة للتحويل', manual: 'تحويل تقريبي حسب السعر الظاهر، بدون رسوم.', unit: { mm: 'مليمتر', cm: 'سنتيمتر', m: 'متر', km: 'كيلومتر', in: 'بوصة', ft: 'قدم', yd: 'ياردة', mi: 'ميل', mg: 'مليجرام', g: 'جرام', kg: 'كيلوجرام', t: 'طن', oz: 'أوقية', lb: 'رطل' }
+            title: 'تحويل الوحدات', category: 'نوع التحويل', length: 'الطول', mass: 'الوزن', speed: 'السرعة', area: 'المساحة', data: 'حجم البيانات', currency: 'العملات', amount: 'القيمة', from: 'من', to: 'إلى', swap: 'عكس الوحدات', rate: 'سعر الصرف', rateHint: 'حدّث السعر اليومي من الإنترنت أو اكتبه بنفسك. ليس سعرًا لحظيًا. تغيير العملات يمسح السعر. السعر الآلي يُرفض بعد 48 ساعة.', invalid: 'أدخل قيمة صحيحة وسعر صرف موجب عند الحاجة.', range: 'القيمة أكبر أو أصغر من النطاق المدعوم.', waiting: 'أدخل قيمة للتحويل', manual: 'تحويل تقريبي حسب السعر الظاهر، بدون رسوم.', unit: { mm: 'مليمتر', cm: 'سنتيمتر', m: 'متر', km: 'كيلومتر', in: 'بوصة', ft: 'قدم', yd: 'ياردة', mi: 'ميل', mg: 'مليجرام', g: 'جرام', kg: 'كيلوجرام', t: 'طن', oz: 'أوقية', lb: 'رطل', 'm/s': 'متر/ثانية', 'km/h': 'كم/ساعة', mph: 'ميل/ساعة', kn: 'عقدة', 'ft/s': 'قدم/ثانية', 'mm²': 'مم مربع', 'cm²': 'سم مربع', 'm²': 'متر مربع', 'km²': 'كم مربع', ha: 'هكتار', 'in²': 'بوصة مربعة', 'ft²': 'قدم مربعة', 'yd²': 'ياردة مربعة', acre: 'إيكر', 'mi²': 'ميل مربع', fed: 'فدان (مصري)', B: 'بايت', KB: 'كيلوبايت', MB: 'ميجابايت', GB: 'جيجابايت', TB: 'تيرابايت' }
         },
         en: {
-            title: 'Unit converter', category: 'Conversion type', length: 'Length', mass: 'Weight', currency: 'Currency', amount: 'Amount', from: 'From', to: 'To', swap: 'Swap units', rate: 'Exchange rate', rateHint: 'Get a daily rate online or enter your own. Not real-time. Changing currencies clears the rate. Automatic rates older than 48 hours are rejected.', invalid: 'Enter a valid amount and a positive exchange rate when needed.', range: 'Value is outside the supported range.', waiting: 'Enter an amount to convert', manual: 'Estimate using the displayed rate, excluding fees.', unit: { mm: 'Millimeter', cm: 'Centimeter', m: 'Meter', km: 'Kilometer', in: 'Inch', ft: 'Foot', yd: 'Yard', mi: 'Mile', mg: 'Milligram', g: 'Gram', kg: 'Kilogram', t: 'Tonne', oz: 'Ounce', lb: 'Pound' }
+            title: 'Unit converter', category: 'Conversion type', length: 'Length', mass: 'Weight', speed: 'Speed', area: 'Area', data: 'Data size', currency: 'Currency', amount: 'Amount', from: 'From', to: 'To', swap: 'Swap units', rate: 'Exchange rate', rateHint: 'Get a daily rate online or enter your own. Not real-time. Changing currencies clears the rate. Automatic rates older than 48 hours are rejected.', invalid: 'Enter a valid amount and a positive exchange rate when needed.', range: 'Value is outside the supported range.', waiting: 'Enter an amount to convert', manual: 'Estimate using the displayed rate, excluding fees.', unit: { mm: 'Millimeter', cm: 'Centimeter', m: 'Meter', km: 'Kilometer', in: 'Inch', ft: 'Foot', yd: 'Yard', mi: 'Mile', mg: 'Milligram', g: 'Gram', kg: 'Kilogram', t: 'Tonne', oz: 'Ounce', lb: 'Pound', 'm/s': 'Meter/sec', 'km/h': 'Km/hour', mph: 'Mile/hour', kn: 'Knot', 'ft/s': 'Foot/sec', 'mm²': 'Sq. millimeter', 'cm²': 'Sq. centimeter', 'm²': 'Sq. meter', 'km²': 'Sq. kilometer', ha: 'Hectare', 'in²': 'Sq. inch', 'ft²': 'Sq. foot', 'yd²': 'Sq. yard', acre: 'Acre', 'mi²': 'Sq. mile', fed: 'Feddan (Egypt)', B: 'Byte', KB: 'Kilobyte', MB: 'Megabyte', GB: 'Gigabyte', TB: 'Terabyte' }
         }
     };
-    Object.assign(words.ar, { refresh: 'حدّث السعر', loading: 'جاري التحديث…', failed: 'تعذّر جلب سعر حديث. اكتب السعر يدويًا وحاول لاحقًا.', stale: 'المصدر أعاد بيانات قديمة أو غير صالحة. لم نستخدمها؛ اكتب السعر يدويًا.', automatic: 'سعر يومي تقريبي، بدون رسوم. تاريخ المصدر:', cached: 'نسخة محفوظة، تاريخ المصدر:', cooldown: 'انتظر دقيقة قبل طلب جديد.', attribution: 'أسعار الصرف من ExchangeRate-API', manualStatus: 'إدخال يدوي، لم يتم التحقق من السعر.' });
-    Object.assign(words.en, { refresh: 'Update rate', loading: 'Updating…', failed: 'Could not get a recent rate. Enter a rate manually and try later.', stale: 'The source returned old or invalid data. It was not used. Enter a rate manually.', automatic: 'Daily estimate, excluding fees. Source updated:', cached: 'Saved rate. Source updated:', cooldown: 'Wait one minute before another request.', attribution: 'Rates by ExchangeRate-API', manualStatus: 'Manual entry. Rate not verified.' });
+    Object.assign(words.ar, { refresh: 'حدّث السعر', loading: 'جاري التحديث…', failed: 'تعذّر جلب سعر حديث. اكتب السعر يدويًا وحاول لاحقًا.', stale: 'المصدر أعاد بيانات قديمة أو غير صالحة. لم نستخدمها؛ اكتب السعر يدويًا.', automatic: 'سعر يومي تقريبي، بدون رسوم. تاريخ المصدر:', cached: 'نسخة محفوظة، تاريخ المصدر:', cooldown: 'انتظر دقيقة قبل طلب جديد.', attribution: 'أسعار الصرف من ExchangeRate-API', manualStatus: 'إدخال يدوي، لم يتم التحقق من السعر.', dataNote: 'كل 1 كيلوبايت = 1024 بايت (الحساب الثنائي المستخدم في الأنظمة).' });
+    Object.assign(words.en, { refresh: 'Update rate', loading: 'Updating…', failed: 'Could not get a recent rate. Enter a rate manually and try later.', stale: 'The source returned old or invalid data. It was not used. Enter a rate manually.', automatic: 'Daily estimate, excluding fees. Source updated:', cached: 'Saved rate. Source updated:', cooldown: 'Wait one minute before another request.', attribution: 'Rates by ExchangeRate-API', manualStatus: 'Manual entry. Rate not verified.', dataNote: 'Binary units: 1 KB = 1024 bytes, as used by operating systems.' });
     const panel = $('converter');
     const category = $('convert-category');
     const from = $('convert-from');
@@ -147,13 +150,15 @@ if (typeof document !== 'undefined') (function () {
     function populate(reset) {
         const currency = category.value === 'currency';
         const values = currency ? ['EGP', 'USD', 'EUR', 'GBP', 'SAR', 'AED'] : Object.keys(UnitConverter.units[category.value]);
-        options(from, values, reset ? (currency ? 'USD' : category.value === 'length' ? 'm' : 'kg') : from.value);
-        options(to, values, reset ? (currency ? 'EGP' : category.value === 'length' ? 'cm' : 'g') : to.value);
+        const defaults = { currency: ['USD', 'EGP'], length: ['m', 'cm'], mass: ['kg', 'g'], speed: ['km/h', 'mph'], area: ['m²', 'ft²'], data: ['GB', 'MB'] }[category.value];
+        options(from, values, reset ? defaults[0] : from.value);
+        options(to, values, reset ? defaults[1] : to.value);
     }
     function render() {
         const currency = category.value === 'currency';
         $('convert-rate-group').hidden = !currency || from.value === to.value;
-        $('convert-note').hidden = !currency;
+        $('convert-note').hidden = !currency && category.value !== 'data';
+        $('convert-note').textContent = currency ? text().manual : category.value === 'data' ? text().dataNote : '';
         $('convert-online').hidden = !currency || from.value === to.value;
         if (source) {
             try { UnitConverter.validateRates(source.data); } catch (_) { rate.value = ''; source = null; state = 'stale'; }

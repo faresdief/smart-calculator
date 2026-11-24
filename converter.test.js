@@ -75,3 +75,18 @@ test('deployment bundle matches converter source exactly', () => {
     const marker = '/* Bundled converter: keep identical to converter.js for the existing deployment file list. */\n';
     assert.equal(fs.readFileSync('script.js', 'utf8').split(marker)[1], fs.readFileSync('converter.js', 'utf8'));
 });
+test('speed, area and data units', () => {
+    near(convert(36, 'speed', 'km/h', 'm/s'), 10);
+    near(convert(1, 'speed', 'mph', 'km/h'), 1.609344);
+    near(convert(1, 'speed', 'kn', 'km/h'), 1.852);
+    near(convert(1, 'area', 'ha', 'm²'), 10000);
+    near(convert(1, 'area', 'km²', 'ha'), 100);
+    near(convert(1, 'area', 'acre', 'm²'), 4046.8564224);
+    near(convert(1, 'area', 'ft²', 'in²'), 144);
+    near(convert(1, 'area', 'fed', 'm²'), 4200.83);
+    near(convert(1, 'data', 'KB', 'B'), 1024);
+    near(convert(1, 'data', 'GB', 'MB'), 1024);
+    near(convert(1536, 'data', 'MB', 'GB'), 1.5);
+    assert.throws(() => convert(1, 'speed', 'm/s', 'MB'));
+    assert.throws(() => convert(1, 'data', 'B', 'm'));
+});
