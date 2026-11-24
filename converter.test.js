@@ -47,3 +47,31 @@ test('invalid, ambiguous, overflowing and underflowing inputs are rejected', () 
     assert.throws(() => convert('1e308', 'length', 'km', 'mm'));
     assert.throws(() => convert('1e-320', 'mass', 'mg', 't'));
 });
+
+const { validateRates, exchangeRate } = require('./converter.js');
+const now = Date.UTC(2026, 10, 24, 9);
+const fixture = () => ({result: 'success', base_code: 'USD', time_last_update_unix: now / 1000 - 3600, rates: {USD: 1, EGP: 50, EUR: 0.9, GBP: 0.75, SAR: 3.75, AED: 3.6725}});
+test('daily rates: validation, cross rates and inverse', () => {
+    const d = fixture();
+    assert.equal(exchangeRate(d, 'USD', 'EGP', now), 50);
+    assert.equal(exchangeRate(d, 'EGP', 'USD', now), 0.02);
+    near(exchangeRate(d, 'EUR', 'EGP', now), 50 / 0.9);
+    assert.equal(exchangeRate(d, 'AED', 'AED', now), 1);
+    assert.equal(validateRates(d, now).rates.USD, 1);
+});
+test('daily rates reject old, future and malformed responses', () => {
+    for (const seconds of [49 * 3600, -3600, NaN]) {
+        const d = fixture(); d.time_last_update_unix = now / 1000 - seconds;
+        assert.throws(() => validateRates(d, now));
+    }
+    for (const code of ['USD','EGP','EUR','GBP','SAR','AED']) for (const value of [undefined, 0, -1, '50', Infinity, NaN]) {
+        const d = fixture(); d.rates[code] = value; assert.throws(() => validateRates(d, now));
+    }
+    for (const d of [null, {}, {...fixture(), result: 'error'}, {...fixture(), base_code: 'EUR'}]) assert.throws(() => validateRates(d, now));
+    assert.throws(() => exchangeRate(fixture(), 'BAD', 'EGP', now));
+});
+test('deployment bundle matches converter source exactly', () => {
+    const fs = require('node:fs');
+    const marker = '/* Bundled converter: keep identical to converter.js for the existing deployment file list. */\n';
+    assert.equal(fs.readFileSync('script.js', 'utf8').split(marker)[1], fs.readFileSync('converter.js', 'utf8'));
+});
