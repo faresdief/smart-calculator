@@ -258,5 +258,146 @@
     return out.length ? out.join('\n') + '\n' : '';
   }
 
-  return { MAX_LEN, FUNCS, initialState, press, view, isPlainNumber, deleteLast, memoryOperand, memoryApply, exportHistoryText };
+  /* ------------------------------------------------------------------ */
+  /* البحث في السجل — نص نقي بدون DOM                                     */
+  /* ------------------------------------------------------------------ */
+
+  /** يوحّد نص البحث: أرقام لاتينية، بدون مسافات/فواصل آلاف، وعلامات العمليات المعروضة. */
+  function normalizeSearch(text) {
+    return Calc.delocalizeNumerals(String(text))
+      .toLowerCase()
+      .replace(/[×·∗]/g, '*')
+      .replace(/[÷∕]/g, '/')
+      .replace(/[−–]/g, '-')
+      .replace(/[\s,]/g, '');
+  }
+
+  /** يرجع فهارس عناصر السجل المطابقة (بترتيبها الأصلي). البحث فارغ = كل العناصر. */
+  function searchHistory(items, query) {
+    const list = Array.isArray(items) ? items : [];
+    const q = normalizeSearch(query || '');
+    const out = [];
+    list.forEach((x, i) => {
+      if (!x || typeof x.expr !== 'string' || typeof x.result !== 'string') return;
+      if (q === '' || normalizeSearch(x.expr + '|' + x.result).includes(q)) out.push(i);
+    });
+    return out;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* حاسبة التواريخ (التقويم الميلادي) — أيام صحيحة بدون كائن Date        */
+  /* ------------------------------------------------------------------ */
+
+  const MAX_DAY_COUNT = 1000000;
+  const MIN_YEAR = 1;
+  const MAX_YEAR = 9999;
+
+  const isLeap = (y) => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+  const daysInMonth = (y, m) => [31, isLeap(y) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][m - 1];
+  const pad = (n, w) => String(n).padStart(w, '0');
+
+  /** 'YYYY-MM-DD' → {y,m,d} أو null إن لم يكن تاريخاً حقيقياً داخل النطاق. */
+  function parseDate(str) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(str).trim());
+    if (!m) return null;
+    const y = Number(m[1]);
+    const mo = Number(m[2]);
+    const d = Number(m[3]);
+    if (y < MIN_YEAR || y > MAX_YEAR || mo < 1 || mo > 12 || d < 1 || d > daysInMonth(y, mo)) return null;
+    return { y, m: mo, d };
+  }
+
+  function formatDate(dt) {
+    return `${pad(dt.y, 4)}-${pad(dt.m, 2)}-${pad(dt.d, 2)}`;
+  }
+
+  /** عدد الأيام منذ 1970-01-01 (خوارزمية civil-from-days). */
+  function toDays(dt) {
+    const y = dt.m <= 2 ? dt.y - 1 : dt.y;
+    const era = Math.floor(y / 400);
+    const yoe = y - era * 400;
+    const doy = Math.floor((153 * (dt.m + (dt.m > 2 ? -3 : 9)) + 2) / 5) + dt.d - 1;
+    const doe = yoe * 365 + Math.floor(yoe / 4) - Math.floor(yoe / 100) + doy;
+    return era * 146097 + doe - 719468;
+  }
+
+  function fromDays(n) {
+    const z = n + 719468;
+    const era = Math.floor(z / 146097);
+    const doe = z - era * 146097;
+    const yoe = Math.floor((doe - Math.floor(doe / 1460) + Math.floor(doe / 36524) - Math.floor(doe / 146096)) / 365);
+    const doy = doe - (365 * yoe + Math.floor(yoe / 4) - Math.floor(yoe / 100));
+    const mp = Math.floor((5 * doy + 2) / 153);
+    const d = doy - Math.floor((153 * mp + 2) / 5) + 1;
+    const m = mp < 10 ? mp + 3 : mp - 9;
+    return { y: yoe + era * 400 + (m <= 2 ? 1 : 0), m, d };
+  }
+
+  /** 0 = الأحد … 6 = السبت */
+  function weekdayOf(dt) {
+    return (((toDays(dt) + 4) % 7) + 7) % 7;
+  }
+
+  /**
+   * الفرق بين تاريخين نصيين. يرجع null لو أحدهما غير صالح، وإلا:
+   * { days (موجب دائماً), negative (الثاني أسبق), weeks, restDays, years, months, restMonthDays }
+   */
+  function dateDifference(a, b) {
+    const da = parseDate(a);
+    const db = parseDate(b);
+    if (!da || !db) return null;
+    const total = toDays(db) - toDays(da);
+    const negative = total < 0;
+    const [lo, hi] = negative ? [db, da] : [da, db];
+    // أشهر كاملة من التاريخ الأقدم (مع تقليص اليوم لآخر الشهر القصير)، والباقي أيام.
+    const anchor = (n) => {
+      const idx = lo.y * 12 + (lo.m - 1) + n;
+      const y = Math.floor(idx / 12);
+      const m = (idx % 12) + 1;
+      return { y, m, d: Math.min(lo.d, daysInMonth(y, m)) };
+    };
+    let wholeMonths = (hi.y - lo.y) * 12 + (hi.m - lo.m);
+    if (toDays(anchor(wholeMonths)) > toDays(hi)) wholeMonths -= 1;
+    const years = Math.floor(wholeMonths / 12);
+    const months = wholeMonths % 12;
+    const days = toDays(hi) - toDays(anchor(wholeMonths));
+    const abs = Math.abs(total);
+    return { days: abs, negative, weeks: Math.floor(abs / 7), restDays: abs % 7, years, months, restMonthDays: days };
+  }
+
+  /** يقرأ عدد أيام صحيحاً (أرقام لاتينية أو هندية). null لو غير صالح أو أكبر من الحد. */
+  function parseDayCount(str) {
+    const s = Calc.delocalizeNumerals(String(str)).replace(/[\s,]/g, '');
+    if (!/^\d{1,7}$/.test(s)) return null;
+    const n = Number(s);
+    return n <= MAX_DAY_COUNT ? n : null;
+  }
+
+  /** يضيف (أو يطرح) أياماً لتاريخ نصي. null لو التاريخ/العدد غير صالح أو الناتج خارج السنوات 1–9999. */
+  function addDays(dateStr, count, sign) {
+    const dt = parseDate(dateStr);
+    if (!dt || !Number.isInteger(count) || Math.abs(count) > MAX_DAY_COUNT) return null;
+    const out = fromDays(toDays(dt) + (sign < 0 ? -count : count));
+    if (out.y < MIN_YEAR || out.y > MAX_YEAR) return null;
+    return { date: formatDate(out), weekday: weekdayOf(out), y: out.y, m: out.m, d: out.d };
+  }
+
+  return {
+    MAX_LEN,
+    FUNCS,
+    initialState,
+    press,
+    view,
+    isPlainNumber,
+    deleteLast,
+    memoryOperand,
+    memoryApply,
+    exportHistoryText,
+    searchHistory,
+    MAX_DAY_COUNT,
+    parseDate,
+    parseDayCount,
+    dateDifference,
+    addDays,
+  };
 });
