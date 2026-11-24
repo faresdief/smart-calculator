@@ -86,6 +86,7 @@ body {
     min-height: 100vh;
     min-height: 100dvh;
     display: grid;
+    grid-template-columns: minmax(0, 1fr); /* الأعمدة لا تتمدد مع التعبيرات الطويلة */
     place-items: center;
     padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
     background: var(--bg-1);
@@ -96,6 +97,14 @@ body {
 
 [hidden] {
     display: none !important;
+}
+
+.app {
+    width: 100%;
+    min-width: 0;
+}
+.app > .calculator {
+    margin-inline: auto;
 }
 
 button {
@@ -237,14 +246,23 @@ svg {
     height: 34px;
     border-radius: 10px;
 }
-.copy-btn svg {
+.copy-btn svg,
+.share-btn svg {
     width: 18px;
     height: 18px;
+}
+.share-btn {
+    position: absolute;
+    top: 6px;
+    left: 46px;
+    min-width: 34px;
+    height: 34px;
+    border-radius: 10px;
 }
 
 .expr {
     min-height: 1.6em;
-    padding-left: 40px;
+    padding-left: 80px;
     padding-right: 34px;
     font-size: 1rem;
     color: var(--muted);
@@ -680,3 +698,27 @@ svg {
     --op-bg: #eae5f3;
     --focus: #5e4885;
 }
+
+/* ---------- البحث في السجل ---------- */
+.history-search {
+    width: 100%;
+    min-height: 44px;
+    margin: 0 0 8px;
+    padding: 10px 12px;
+    font: inherit;
+    color: var(--text);
+    background: var(--display-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+}
+.history-search::placeholder {
+    color: var(--muted);
+}
+
+/* ---------- حاسبة التواريخ (تشارك تنسيق محوّل الوحدات) ---------- */
+#dates { margin-top: 0; }
+#dates input[type='date'] { text-align: start; }
+#date-result { display: block; padding: 12px; border-radius: 10px; background: var(--display-bg); overflow-wrap: anywhere; font-size: 16px; line-height: 1.7; }
+#date-result .date-main { display: block; font-size: 1.15rem; font-weight: 500; color: var(--text); }
+#date-result .date-sub { display: block; font-size: 13px; color: var(--muted); }
+#date-result.is-error { color: var(--danger); font-size: 13px; }

@@ -69,6 +69,9 @@
                 <button type="button" class="icon-btn copy-btn" id="btn-copy" data-i18n-label="copy">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
                 </button>
+                <button type="button" class="icon-btn share-btn" id="btn-share" data-i18n-label="share">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>
+                </button>
                 <span class="mem-indicator" id="mem-indicator" data-i18n-label="memory_on" hidden>M</span>
                 <div class="expr" id="expr"></div>
                 <output class="result" id="result" aria-live="polite" aria-atomic="true">0</output>
@@ -156,6 +159,19 @@
                 </div>
             </details>
 
+            <details class="converter" id="dates">
+                <summary data-i18n="dates_title">حاسبة التواريخ</summary>
+                <div class="converter-body">
+                    <label><span data-i18n="dates_mode">نوع الحساب</span>
+                        <select id="date-mode"><option value="diff" data-i18n="dates_diff">الفرق بين تاريخين</option><option value="add" data-i18n="dates_add">إضافة أيام لتاريخ</option><option value="sub" data-i18n="dates_sub">طرح أيام من تاريخ</option></select>
+                    </label>
+                    <label><span id="date-a-label">من تاريخ</span><input id="date-a" type="date" min="0001-01-01" max="9999-12-31" dir="ltr"></label>
+                    <label id="date-b-group"><span data-i18n="dates_to">إلى تاريخ</span><input id="date-b" type="date" min="0001-01-01" max="9999-12-31" dir="ltr"></label>
+                    <label id="date-n-group" hidden><span data-i18n="dates_days">عدد الأيام</span><input id="date-n" type="text" inputmode="numeric" dir="ltr" autocomplete="off" maxlength="9"></label>
+                    <output id="date-result" aria-live="polite" aria-atomic="true"></output>
+                </div>
+            </details>
+
             <p class="keyboard-hint" id="keyboard-hint">⌨ 0–9 · + − * / · Enter = · Backspace ⌫ · Esc C</p>
 
             <!-- سجل العمليات -->
@@ -174,7 +190,9 @@
                         </button>
                     </div>
                 </header>
+                <input type="search" class="history-search" id="history-search" data-i18n-label="history_search" autocomplete="off" enterkeyhint="search" dir="auto" hidden>
                 <p class="history-empty" id="history-empty" data-i18n="history_empty">لا توجد عمليات سابقة بعد.</p>
+                <p class="history-empty" id="history-nomatch" data-i18n="history_nomatch" hidden>لا توجد نتائج مطابقة.</p>
                 <ol class="history-list" id="history-list"></ol>
             </aside>
 
