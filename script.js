@@ -32,6 +32,54 @@
             share_failed: 'تعذّر إنشاء الصورة',
             share_saved: 'تم حفظ صورة النتيجة',
             history_search: 'ابحث في السجل',
+            favorites: 'المفضلة',
+            favs_empty: 'لا توجد نتائج مفضلة بعد. اضغط النجمة بجانب أي نتيجة لحفظها.',
+            favs_clear: 'مسح المفضلة',
+            favs_cleared: 'تم مسح المفضلة',
+            fav_add: 'إضافة النتيجة للمفضلة',
+            fav_remove: 'إزالة النتيجة من المفضلة',
+            fav_added: 'تمت الإضافة للمفضلة',
+            fav_removed: 'تمت الإزالة من المفضلة',
+            sound_off: 'إيقاف الصوت والاهتزاز',
+            sound_on: 'تشغيل الصوت والاهتزاز',
+            sound_toast_on: 'تم تشغيل الصوت والاهتزاز',
+            sound_toast_off: 'تم إيقاف الصوت والاهتزاز',
+            pct_title: 'حاسبة النسب',
+            pct_mode: 'نوع الحساب',
+            pct_discount: 'خصم على سعر',
+            pct_tip: 'إكرامية على فاتورة',
+            pct_tax_add: 'إضافة ضريبة',
+            pct_tax_incl: 'استخراج الضريبة من إجمالي',
+            pct_what: 'كم نسبة رقم من رقم',
+            pct_change: 'نسبة الزيادة أو النقصان',
+            pct_price: 'السعر',
+            pct_discount_rate: 'نسبة الخصم %',
+            pct_bill: 'قيمة الفاتورة',
+            pct_tip_rate: 'نسبة الإكرامية %',
+            pct_amount: 'المبلغ',
+            pct_tax_rate: 'نسبة الضريبة %',
+            pct_total_incl: 'الإجمالي شامل الضريبة',
+            pct_value: 'الرقم',
+            pct_of: 'من الرقم',
+            pct_from: 'من القيمة',
+            pct_to: 'إلى القيمة',
+            pct_people: 'عدد الأشخاص',
+            pct_res_final: 'السعر بعد الخصم',
+            pct_res_saved: 'وفّرت',
+            pct_res_tip: 'الإكرامية',
+            pct_res_total: 'الإجمالي',
+            pct_res_per: 'لكل شخص',
+            pct_res_tax: 'الضريبة',
+            pct_res_net: 'قبل الضريبة',
+            pct_res_percent: 'النسبة',
+            pct_res_increase: 'زيادة',
+            pct_res_decrease: 'نقصان',
+            pct_res_same: 'لا يوجد تغيير',
+            pct_wait: 'أدخل القيم لعرض النتيجة',
+            pct_invalid: 'أدخل أرقامًا صحيحة (نسبة الخصم من 0 إلى 100، والنسب الأخرى حتى 1000)',
+            pct_people_invalid: 'عدد الأشخاص رقم صحيح من 1 إلى 100',
+            pct_zero: 'لا يمكن الحساب على صفر',
+            pct_range: 'النتيجة خارج النطاق المدعوم',
             history_nomatch: 'لا توجد نتائج مطابقة.',
             dates_title: 'حاسبة التواريخ',
             dates_mode: 'نوع الحساب',
@@ -129,6 +177,54 @@
             share_failed: 'Could not create the image',
             share_saved: 'Result image saved',
             history_search: 'Search history',
+            favorites: 'Favorites',
+            favs_empty: 'No favorites yet. Tap the star next to any result to save it.',
+            favs_clear: 'Clear favorites',
+            favs_cleared: 'Favorites cleared',
+            fav_add: 'Add result to favorites',
+            fav_remove: 'Remove result from favorites',
+            fav_added: 'Added to favorites',
+            fav_removed: 'Removed from favorites',
+            sound_off: 'Turn sound and haptics off',
+            sound_on: 'Turn sound and haptics on',
+            sound_toast_on: 'Sound and haptics on',
+            sound_toast_off: 'Sound and haptics off',
+            pct_title: 'Percentage calculator',
+            pct_mode: 'Calculation',
+            pct_discount: 'Discount on a price',
+            pct_tip: 'Tip on a bill',
+            pct_tax_add: 'Add tax',
+            pct_tax_incl: 'Find the tax in a total',
+            pct_what: 'What percent is one number of another',
+            pct_change: 'Percent increase or decrease',
+            pct_price: 'Price',
+            pct_discount_rate: 'Discount %',
+            pct_bill: 'Bill amount',
+            pct_tip_rate: 'Tip %',
+            pct_amount: 'Amount',
+            pct_tax_rate: 'Tax rate %',
+            pct_total_incl: 'Total including tax',
+            pct_value: 'Number',
+            pct_of: 'Of the number',
+            pct_from: 'From value',
+            pct_to: 'To value',
+            pct_people: 'Number of people',
+            pct_res_final: 'Price after discount',
+            pct_res_saved: 'You save',
+            pct_res_tip: 'Tip',
+            pct_res_total: 'Total',
+            pct_res_per: 'Per person',
+            pct_res_tax: 'Tax',
+            pct_res_net: 'Before tax',
+            pct_res_percent: 'Percent',
+            pct_res_increase: 'Increase',
+            pct_res_decrease: 'Decrease',
+            pct_res_same: 'No change',
+            pct_wait: 'Enter the values to see the result',
+            pct_invalid: 'Enter valid numbers (discount 0 to 100, other rates up to 1000)',
+            pct_people_invalid: 'People must be a whole number from 1 to 100',
+            pct_zero: 'Cannot calculate with zero',
+            pct_range: 'Result is outside the supported range',
             history_nomatch: 'No matching calculations.',
             dates_title: 'Date calculator',
             dates_mode: 'Calculation',
@@ -249,12 +345,15 @@
         digits: store.get('digits', 'latin') === 'arabic' ? 'arabic' : 'latin',
         angle: store.get('angle', 'deg') === 'rad' ? 'rad' : 'deg',
         sci: store.get('sci', '0') === '1',
+        feedback: store.get('feedback', '1') !== '0',
         accent: ACCENTS.includes(store.get('accent', 'green')) ? store.get('accent', 'green') : 'green',
         inv: false
     };
 
     let calc = State.initialState();
     let history = loadHistory();
+    let favorites = loadFavorites();
+    let panelView = 'history';
 
     const els = {
         calculator: $('#calculator'),
@@ -278,13 +377,18 @@
         historyExport: $('#btn-history-export'),
         historySearch: $('#history-search'),
         historyNoMatch: $('#history-nomatch'),
+        favsEmpty: $('#favs-empty'),
+        tabHistory: $('#tab-history'),
+        tabFavs: $('#tab-favs'),
+        fav: $('#btn-fav'),
+        btnSound: $('#btn-sound'),
         btnAccent: $('#btn-accent'),
         accentPanel: $('#accent-panel'),
         memIndicator: $('#mem-indicator'),
         toast: $('#toast'),
         themeColor: $('meta[name="theme-color"]')
     };
-    const panelParts = () => [$('.toolbar'), $('.display'), els.sci, $('.keys'), $('#converter'), $('#dates'), $('#keyboard-hint')];
+    const panelParts = () => [$('.toolbar'), $('.display'), els.sci, $('.keys'), $('#converter'), $('#dates'), $('#percent'), $('#keyboard-hint')];
 
     const t = (key) => {
         const dict = STRINGS[settings.lang];
@@ -329,6 +433,7 @@
         els.copy.disabled = !v.raw;
         els.copy.dataset.raw = v.raw;
         els.share.disabled = !v.raw;
+        updateFavButton();
     }
 
     let toastTimer = 0;
@@ -342,7 +447,54 @@
     /* ------------------------------------------------------------------ */
     /* الإدخال                                                             */
     /* ------------------------------------------------------------------ */
+    /* ------------------------------------------------------------------ */
+    /* صوت واهتزاز خفيفان للأزرار (قابلان للإيقاف)                          */
+    /* ------------------------------------------------------------------ */
+    let audioCtx = null;
+    /** نقرة قصيرة هادئة: نغمة جيبية منخفضة تهبط بسرعة وتخمد في أقل من 60 ملّي ثانية. */
+    function tick(key) {
+        if (!settings.feedback) return;
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        try {
+            if (!audioCtx) audioCtx = new AC();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+            const pitch = key === 'equals' ? 170 : /^[\d.]$/.test(key) ? 250 : key === 'clear' || key === 'del' ? 190 : 210;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(pitch * 1.6, now);
+            osc.frequency.exponentialRampToValueAtTime(pitch, now + 0.03);
+            gain.gain.setValueAtTime(0.0001, now);
+            gain.gain.linearRampToValueAtTime(0.06, now + 0.004);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.055);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.07);
+        } catch (err) {
+            /* الصوت اختياري */
+        }
+    }
+
+    function applyFeedback() {
+        els.btnSound.setAttribute('aria-pressed', String(settings.feedback));
+        const label = t(settings.feedback ? 'sound_off' : 'sound_on');
+        els.btnSound.setAttribute('aria-label', label);
+        els.btnSound.title = label;
+    }
+
+    els.btnSound.addEventListener('click', () => {
+        settings.feedback = !settings.feedback;
+        store.set('feedback', settings.feedback ? '1' : '0');
+        applyFeedback();
+        if (settings.feedback) tick('0');
+        toast(t(settings.feedback ? 'sound_toast_on' : 'sound_toast_off'));
+    });
+
     function press(key) {
+        tick(key);
         const before = calc.seq;
         calc = State.press(calc, key, { angle: settings.angle });
         if (calc.seq !== before && calc.entry) pushHistory(calc.entry);
@@ -370,7 +522,7 @@
 
     // اهتزاز خفيف على اللمس
     els.calculator.addEventListener('pointerdown', (e) => {
-        if (e.pointerType === 'touch' && e.target.closest('[data-key], [data-mem]') && navigator.vibrate) {
+        if (settings.feedback && e.pointerType === 'touch' && e.target.closest('[data-key], [data-mem]') && navigator.vibrate) {
             try {
                 navigator.vibrate(8);
             } catch (err) {
@@ -521,6 +673,7 @@
 
     $$('[data-mem]').forEach((btn) => {
         btn.addEventListener('click', (e) => {
+            tick('mem');
             const applied = State.memoryApply(calc, btn.dataset.mem, memory, { angle: settings.angle });
             calc = applied.state;
             memory = applied.memory;
@@ -601,18 +754,91 @@
         if (!els.history.hidden) renderHistory();
     }
 
+    function loadFavorites() {
+        try {
+            const arr = JSON.parse(store.get('favorites', '[]'));
+            if (!Array.isArray(arr)) return [];
+            return arr
+                .filter((x) => x && typeof x.expr === 'string' && typeof x.result === 'string')
+                .slice(0, State.FAVORITES_LIMIT);
+        } catch (err) {
+            return [];
+        }
+    }
+
+    function saveFavorites() {
+        store.set('favorites', JSON.stringify(favorites));
+    }
+
+    /** العنصر الظاهر الآن على الشاشة (تعبير + نتيجة) أو null لو لا توجد نتيجة صالحة. */
+    function currentEntry() {
+        const v = State.view(calc, { angle: settings.angle });
+        if (v.error || !v.raw) return null;
+        const expr = calc.done ? calc.lastExpr || v.raw : calc.expr || v.raw;
+        return { expr: expr, result: v.raw };
+    }
+
+    function updateFavButton() {
+        const entry = currentEntry();
+        const on = Boolean(entry) && State.favoriteIndex(favorites, entry) !== -1;
+        els.fav.disabled = !entry;
+        els.fav.setAttribute('aria-pressed', String(on));
+        const label = t(on ? 'fav_remove' : 'fav_add');
+        els.fav.setAttribute('aria-label', label);
+        els.fav.title = label;
+    }
+
+    function toggleFavorite(entry) {
+        if (!entry) return;
+        const had = State.favoriteIndex(favorites, entry) !== -1;
+        favorites = State.toggleFavorite(favorites, entry);
+        saveFavorites();
+        updateFavButton();
+        if (!els.history.hidden) renderHistory();
+        toast(t(had ? 'fav_removed' : 'fav_added'));
+    }
+
+    els.fav.addEventListener('click', () => toggleFavorite(currentEntry()));
+
+    const activeList = () => (panelView === 'favs' ? favorites : history);
+
+    function setPanelView(view) {
+        panelView = view === 'favs' ? 'favs' : 'history';
+        els.historySearch.value = '';
+        renderHistory();
+    }
+
     function renderHistory() {
+        const favView = panelView === 'favs';
+        const list = activeList();
         els.historyList.textContent = '';
-        const matches = State.searchHistory(history, els.historySearch.value);
-        els.historyEmpty.hidden = history.length > 0;
-        els.historySearch.hidden = history.length === 0;
-        els.historyNoMatch.hidden = history.length === 0 || matches.length > 0;
-        els.historyClear.disabled = history.length === 0;
+        els.tabHistory.setAttribute('aria-selected', String(!favView));
+        els.tabFavs.setAttribute('aria-selected', String(favView));
+        const matches = State.searchHistory(list, els.historySearch.value);
+        els.historyEmpty.hidden = favView || history.length > 0;
+        els.favsEmpty.hidden = !favView || favorites.length > 0;
+        els.historySearch.hidden = list.length === 0;
+        els.historyNoMatch.hidden = list.length === 0 || matches.length > 0;
+        els.historyClear.disabled = list.length === 0;
+        els.historyExport.hidden = favView;
         els.historyExport.disabled = history.length === 0;
+        const clearLabel = t(favView ? 'favs_clear' : 'history_clear');
+        els.historyClear.setAttribute('aria-label', clearLabel);
+        els.historyClear.title = clearLabel;
         matches.forEach((i) => {
-            const item = history[i];
+            const item = list[i];
             const li = document.createElement('li');
             li.dir = 'ltr'; // الأرقام والعمليات دائماً من اليسار لليمين حتى في الواجهة العربية
+
+            const star = document.createElement('button');
+            star.type = 'button';
+            star.className = 'icon-btn h-star';
+            star.dataset.index = String(i);
+            star.dataset.action = 'star';
+            const isFav = State.favoriteIndex(favorites, item) !== -1;
+            star.setAttribute('aria-pressed', String(isFav));
+            star.setAttribute('aria-label', t(isFav ? 'fav_remove' : 'fav_add'));
+            star.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.8 6.8 19.6l1-5.8L3.5 9.7l5.9-.9z"/></svg>';
 
             const exprBtn = document.createElement('button');
             exprBtn.type = 'button';
@@ -630,7 +856,7 @@
             resBtn.textContent = loc(Calc.formatExpression(item.result));
             resBtn.setAttribute('aria-label', t('h_use') + ': ' + resBtn.textContent);
 
-            li.append(exprBtn, resBtn);
+            li.append(star, exprBtn, resBtn);
             els.historyList.appendChild(li);
         });
     }
@@ -654,6 +880,8 @@
 
     els.btnHistory.addEventListener('click', () => (els.history.hidden ? openHistory() : closeHistory()));
     els.historyClose.addEventListener('click', closeHistory);
+    els.tabHistory.addEventListener('click', () => setPanelView('history'));
+    els.tabFavs.addEventListener('click', () => setPanelView('favs'));
     els.historySearch.addEventListener('input', renderHistory);
     els.historySearch.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
@@ -666,6 +894,14 @@
         }
     });
     els.historyClear.addEventListener('click', () => {
+        if (panelView === 'favs') {
+            favorites = [];
+            saveFavorites();
+            updateFavButton();
+            renderHistory();
+            toast(t('favs_cleared'));
+            return;
+        }
         history = [];
         saveHistory();
         renderHistory();
@@ -692,8 +928,12 @@
     els.historyList.addEventListener('click', (e) => {
         const btn = e.target.closest('button[data-index]');
         if (!btn) return;
-        const item = history[Number(btn.dataset.index)];
+        const item = activeList()[Number(btn.dataset.index)];
         if (!item) return;
+        if (btn.dataset.action === 'star') {
+            toggleFavorite({ expr: item.expr, result: item.result });
+            return;
+        }
         if (btn.dataset.action === 'load') {
             calc = Object.assign(State.initialState(), { seq: calc.seq, expr: item.expr });
         } else {
@@ -945,6 +1185,88 @@
     dateEls.n.addEventListener('input', renderDates);
 
     /* ------------------------------------------------------------------ */
+    /* حاسبة النسب                                                         */
+    /* ------------------------------------------------------------------ */
+    const pctEls = {
+        mode: $('#pct-mode'),
+        a: $('#pct-a'),
+        b: $('#pct-b'),
+        n: $('#pct-n'),
+        aLabel: $('#pct-a-label'),
+        bLabel: $('#pct-b-label'),
+        nGroup: $('#pct-n-group'),
+        out: $('#pct-result')
+    };
+    const PCT_LABELS = {
+        discount: ['pct_price', 'pct_discount_rate'],
+        tip: ['pct_bill', 'pct_tip_rate'],
+        tax_add: ['pct_amount', 'pct_tax_rate'],
+        tax_incl: ['pct_total_incl', 'pct_tax_rate'],
+        what: ['pct_value', 'pct_of'],
+        change: ['pct_from', 'pct_to']
+    };
+
+    /** رقم بعدد خانات ثابت أو مختصر، مع فواصل الآلاف والأرقام حسب الإعداد. */
+    function fmtNum(n, fixed) {
+        const abs = Math.abs(n);
+        const str = fixed ? abs.toFixed(2) : String(Number(abs.toFixed(2)));
+        const dot = str.indexOf('.');
+        const grouped = Calc.groupDigits(dot === -1 ? str : str.slice(0, dot)) + (dot === -1 ? '' : str.slice(dot));
+        return loc((n < 0 && Number(str) !== 0 ? '-' : '') + grouped);
+    }
+
+    function renderPercent() {
+        const mode = pctEls.mode.value;
+        const labels = PCT_LABELS[mode];
+        pctEls.aLabel.textContent = t(labels[0]);
+        pctEls.bLabel.textContent = t(labels[1]);
+        pctEls.nGroup.hidden = mode !== 'tip';
+        const out = pctEls.out;
+        out.textContent = '';
+        out.classList.remove('is-error');
+        const fail = (key) => {
+            out.classList.add('is-error');
+            out.textContent = t(key);
+        };
+        if (!pctEls.a.value.trim() || !pctEls.b.value.trim()) return fail('pct_wait');
+        if (mode === 'tip' && pctEls.n.value.trim() === '') return fail('pct_people_invalid');
+        const r = State.percentCalc(mode, pctEls.a.value, pctEls.b.value, mode === 'tip' ? pctEls.n.value : undefined);
+        if (!r) {
+            if (mode === 'tip' && State.parseAmount(pctEls.a.value) !== null && State.parseAmount(pctEls.b.value) !== null &&
+                State.percentCalc('tip', pctEls.a.value, pctEls.b.value) && !State.percentCalc('tip', pctEls.a.value, pctEls.b.value, pctEls.n.value)) {
+                return fail('pct_people_invalid');
+            }
+            return fail('pct_invalid');
+        }
+        if (r.error) return fail(r.error === 'ZERO' ? 'pct_zero' : 'pct_range');
+        const line = (cls, key, value) => out.appendChild(dateLine(cls, t(key) + ': ' + value));
+        if (mode === 'discount') {
+            line('date-main', 'pct_res_final', fmtNum(r.final, true));
+            line('date-sub', 'pct_res_saved', fmtNum(r.saved, true));
+        } else if (mode === 'tip') {
+            line('date-main', 'pct_res_total', fmtNum(r.total, true));
+            line('date-sub', 'pct_res_tip', fmtNum(r.tip, true));
+            if (r.people > 1) line('date-sub', 'pct_res_per', fmtNum(r.perPerson, true));
+        } else if (mode === 'tax_add') {
+            line('date-main', 'pct_res_total', fmtNum(r.total, true));
+            line('date-sub', 'pct_res_tax', fmtNum(r.tax, true));
+        } else if (mode === 'tax_incl') {
+            line('date-main', 'pct_res_net', fmtNum(r.net, true));
+            line('date-sub', 'pct_res_tax', fmtNum(r.tax, true));
+        } else if (mode === 'what') {
+            line('date-main', 'pct_res_percent', fmtNum(r.percent, false) + '%');
+        } else {
+            const p = Number(r.percent.toFixed(2));
+            line('date-main', p === 0 ? 'pct_res_same' : p > 0 ? 'pct_res_increase' : 'pct_res_decrease', fmtNum(Math.abs(r.percent), false) + '%');
+        }
+    }
+
+    [pctEls.mode, pctEls.a, pctEls.b, pctEls.n].forEach((el) => {
+        el.addEventListener('input', renderPercent);
+        el.addEventListener('change', renderPercent);
+    });
+
+    /* ------------------------------------------------------------------ */
     /* الإعدادات: ثيم / لغة / أرقام / زوايا / وضع علمي                      */
     /* ------------------------------------------------------------------ */
     function applyTheme() {
@@ -1006,6 +1328,9 @@
         applyTheme();
         applyAngle();
         renderDates();
+        renderPercent();
+        applyFeedback();
+        updateFavButton();
         if (!els.history.hidden) renderHistory();
     }
 
@@ -1027,6 +1352,7 @@
         store.set('digits', settings.digits);
         applyDigits();
         renderDates();
+        renderPercent();
         if (!els.history.hidden) renderHistory();
         render();
     });
@@ -1090,7 +1416,10 @@
     'use strict';
     const units = {
         length: { mm: 0.001, cm: 0.01, m: 1, km: 1000, in: 0.0254, ft: 0.3048, yd: 0.9144, mi: 1609.344 },
-        mass: { mg: 0.000001, g: 0.001, kg: 1, t: 1000, oz: 0.028349523125, lb: 0.45359237 }
+        mass: { mg: 0.000001, g: 0.001, kg: 1, t: 1000, oz: 0.028349523125, lb: 0.45359237 },
+        speed: { 'm/s': 1, 'km/h': 1 / 3.6, mph: 0.44704, kn: 1852 / 3600, 'ft/s': 0.3048 },
+        area: { 'mm²': 1e-6, 'cm²': 1e-4, 'm²': 1, 'km²': 1e6, ha: 1e4, 'in²': 0.00064516, 'ft²': 0.09290304, 'yd²': 0.83612736, acre: 4046.8564224, 'mi²': 2589988.110336, fed: 4200.83 },
+        data: { B: 1, KB: 1024, MB: 1048576, GB: 1073741824, TB: 1099511627776 }
     };
     function number(value) {
         if (typeof value !== 'string' && typeof value !== 'number') throw new Error('INVALID');
@@ -1146,14 +1475,14 @@ if (typeof document !== 'undefined') (function () {
     const $ = (id) => document.getElementById(id);
     const words = {
         ar: {
-            title: 'تحويل الوحدات', category: 'نوع التحويل', length: 'الطول', mass: 'الوزن', currency: 'العملات', amount: 'القيمة', from: 'من', to: 'إلى', swap: 'عكس الوحدات', rate: 'سعر الصرف', rateHint: 'حدّث السعر اليومي من الإنترنت أو اكتبه بنفسك. ليس سعرًا لحظيًا. تغيير العملات يمسح السعر. السعر الآلي يُرفض بعد 48 ساعة.', invalid: 'أدخل قيمة صحيحة وسعر صرف موجب عند الحاجة.', range: 'القيمة أكبر أو أصغر من النطاق المدعوم.', waiting: 'أدخل قيمة للتحويل', manual: 'تحويل تقريبي حسب السعر الظاهر، بدون رسوم.', unit: { mm: 'مليمتر', cm: 'سنتيمتر', m: 'متر', km: 'كيلومتر', in: 'بوصة', ft: 'قدم', yd: 'ياردة', mi: 'ميل', mg: 'مليجرام', g: 'جرام', kg: 'كيلوجرام', t: 'طن', oz: 'أوقية', lb: 'رطل' }
+            title: 'تحويل الوحدات', category: 'نوع التحويل', length: 'الطول', mass: 'الوزن', speed: 'السرعة', area: 'المساحة', data: 'حجم البيانات', currency: 'العملات', amount: 'القيمة', from: 'من', to: 'إلى', swap: 'عكس الوحدات', rate: 'سعر الصرف', rateHint: 'حدّث السعر اليومي من الإنترنت أو اكتبه بنفسك. ليس سعرًا لحظيًا. تغيير العملات يمسح السعر. السعر الآلي يُرفض بعد 48 ساعة.', invalid: 'أدخل قيمة صحيحة وسعر صرف موجب عند الحاجة.', range: 'القيمة أكبر أو أصغر من النطاق المدعوم.', waiting: 'أدخل قيمة للتحويل', manual: 'تحويل تقريبي حسب السعر الظاهر، بدون رسوم.', unit: { mm: 'مليمتر', cm: 'سنتيمتر', m: 'متر', km: 'كيلومتر', in: 'بوصة', ft: 'قدم', yd: 'ياردة', mi: 'ميل', mg: 'مليجرام', g: 'جرام', kg: 'كيلوجرام', t: 'طن', oz: 'أوقية', lb: 'رطل', 'm/s': 'متر/ثانية', 'km/h': 'كم/ساعة', mph: 'ميل/ساعة', kn: 'عقدة', 'ft/s': 'قدم/ثانية', 'mm²': 'مم مربع', 'cm²': 'سم مربع', 'm²': 'متر مربع', 'km²': 'كم مربع', ha: 'هكتار', 'in²': 'بوصة مربعة', 'ft²': 'قدم مربعة', 'yd²': 'ياردة مربعة', acre: 'إيكر', 'mi²': 'ميل مربع', fed: 'فدان (مصري)', B: 'بايت', KB: 'كيلوبايت', MB: 'ميجابايت', GB: 'جيجابايت', TB: 'تيرابايت' }
         },
         en: {
-            title: 'Unit converter', category: 'Conversion type', length: 'Length', mass: 'Weight', currency: 'Currency', amount: 'Amount', from: 'From', to: 'To', swap: 'Swap units', rate: 'Exchange rate', rateHint: 'Get a daily rate online or enter your own. Not real-time. Changing currencies clears the rate. Automatic rates older than 48 hours are rejected.', invalid: 'Enter a valid amount and a positive exchange rate when needed.', range: 'Value is outside the supported range.', waiting: 'Enter an amount to convert', manual: 'Estimate using the displayed rate, excluding fees.', unit: { mm: 'Millimeter', cm: 'Centimeter', m: 'Meter', km: 'Kilometer', in: 'Inch', ft: 'Foot', yd: 'Yard', mi: 'Mile', mg: 'Milligram', g: 'Gram', kg: 'Kilogram', t: 'Tonne', oz: 'Ounce', lb: 'Pound' }
+            title: 'Unit converter', category: 'Conversion type', length: 'Length', mass: 'Weight', speed: 'Speed', area: 'Area', data: 'Data size', currency: 'Currency', amount: 'Amount', from: 'From', to: 'To', swap: 'Swap units', rate: 'Exchange rate', rateHint: 'Get a daily rate online or enter your own. Not real-time. Changing currencies clears the rate. Automatic rates older than 48 hours are rejected.', invalid: 'Enter a valid amount and a positive exchange rate when needed.', range: 'Value is outside the supported range.', waiting: 'Enter an amount to convert', manual: 'Estimate using the displayed rate, excluding fees.', unit: { mm: 'Millimeter', cm: 'Centimeter', m: 'Meter', km: 'Kilometer', in: 'Inch', ft: 'Foot', yd: 'Yard', mi: 'Mile', mg: 'Milligram', g: 'Gram', kg: 'Kilogram', t: 'Tonne', oz: 'Ounce', lb: 'Pound', 'm/s': 'Meter/sec', 'km/h': 'Km/hour', mph: 'Mile/hour', kn: 'Knot', 'ft/s': 'Foot/sec', 'mm²': 'Sq. millimeter', 'cm²': 'Sq. centimeter', 'm²': 'Sq. meter', 'km²': 'Sq. kilometer', ha: 'Hectare', 'in²': 'Sq. inch', 'ft²': 'Sq. foot', 'yd²': 'Sq. yard', acre: 'Acre', 'mi²': 'Sq. mile', fed: 'Feddan (Egypt)', B: 'Byte', KB: 'Kilobyte', MB: 'Megabyte', GB: 'Gigabyte', TB: 'Terabyte' }
         }
     };
-    Object.assign(words.ar, { refresh: 'حدّث السعر', loading: 'جاري التحديث…', failed: 'تعذّر جلب سعر حديث. اكتب السعر يدويًا وحاول لاحقًا.', stale: 'المصدر أعاد بيانات قديمة أو غير صالحة. لم نستخدمها؛ اكتب السعر يدويًا.', automatic: 'سعر يومي تقريبي، بدون رسوم. تاريخ المصدر:', cached: 'نسخة محفوظة، تاريخ المصدر:', cooldown: 'انتظر دقيقة قبل طلب جديد.', attribution: 'أسعار الصرف من ExchangeRate-API', manualStatus: 'إدخال يدوي، لم يتم التحقق من السعر.' });
-    Object.assign(words.en, { refresh: 'Update rate', loading: 'Updating…', failed: 'Could not get a recent rate. Enter a rate manually and try later.', stale: 'The source returned old or invalid data. It was not used. Enter a rate manually.', automatic: 'Daily estimate, excluding fees. Source updated:', cached: 'Saved rate. Source updated:', cooldown: 'Wait one minute before another request.', attribution: 'Rates by ExchangeRate-API', manualStatus: 'Manual entry. Rate not verified.' });
+    Object.assign(words.ar, { refresh: 'حدّث السعر', loading: 'جاري التحديث…', failed: 'تعذّر جلب سعر حديث. اكتب السعر يدويًا وحاول لاحقًا.', stale: 'المصدر أعاد بيانات قديمة أو غير صالحة. لم نستخدمها؛ اكتب السعر يدويًا.', automatic: 'سعر يومي تقريبي، بدون رسوم. تاريخ المصدر:', cached: 'نسخة محفوظة، تاريخ المصدر:', cooldown: 'انتظر دقيقة قبل طلب جديد.', attribution: 'أسعار الصرف من ExchangeRate-API', manualStatus: 'إدخال يدوي، لم يتم التحقق من السعر.', dataNote: 'كل 1 كيلوبايت = 1024 بايت (الحساب الثنائي المستخدم في الأنظمة).' });
+    Object.assign(words.en, { refresh: 'Update rate', loading: 'Updating…', failed: 'Could not get a recent rate. Enter a rate manually and try later.', stale: 'The source returned old or invalid data. It was not used. Enter a rate manually.', automatic: 'Daily estimate, excluding fees. Source updated:', cached: 'Saved rate. Source updated:', cooldown: 'Wait one minute before another request.', attribution: 'Rates by ExchangeRate-API', manualStatus: 'Manual entry. Rate not verified.', dataNote: 'Binary units: 1 KB = 1024 bytes, as used by operating systems.' });
     const panel = $('converter');
     const category = $('convert-category');
     const from = $('convert-from');
@@ -1230,13 +1559,15 @@ if (typeof document !== 'undefined') (function () {
     function populate(reset) {
         const currency = category.value === 'currency';
         const values = currency ? ['EGP', 'USD', 'EUR', 'GBP', 'SAR', 'AED'] : Object.keys(UnitConverter.units[category.value]);
-        options(from, values, reset ? (currency ? 'USD' : category.value === 'length' ? 'm' : 'kg') : from.value);
-        options(to, values, reset ? (currency ? 'EGP' : category.value === 'length' ? 'cm' : 'g') : to.value);
+        const defaults = { currency: ['USD', 'EGP'], length: ['m', 'cm'], mass: ['kg', 'g'], speed: ['km/h', 'mph'], area: ['m²', 'ft²'], data: ['GB', 'MB'] }[category.value];
+        options(from, values, reset ? defaults[0] : from.value);
+        options(to, values, reset ? defaults[1] : to.value);
     }
     function render() {
         const currency = category.value === 'currency';
         $('convert-rate-group').hidden = !currency || from.value === to.value;
-        $('convert-note').hidden = !currency;
+        $('convert-note').hidden = !currency && category.value !== 'data';
+        $('convert-note').textContent = currency ? text().manual : category.value === 'data' ? text().dataNote : '';
         $('convert-online').hidden = !currency || from.value === to.value;
         if (source) {
             try { UnitConverter.validateRates(source.data); } catch (_) { rate.value = ''; source = null; state = 'stale'; }
