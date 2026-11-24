@@ -508,7 +508,7 @@
     /* ------------------------------------------------------------------ */
     function applyTheme() {
         root.setAttribute('data-theme', settings.theme);
-        if (els.themeColor) els.themeColor.setAttribute('content', settings.theme === 'light' ? '#e6edfb' : '#0b1220');
+        if (els.themeColor) els.themeColor.setAttribute('content', settings.theme === 'light' ? '#f1f2ee' : '#141716');
         els.btnTheme.setAttribute('aria-label', t(settings.theme === 'dark' ? 'theme_light' : 'theme_dark'));
         els.btnTheme.title = els.btnTheme.getAttribute('aria-label');
     }
