@@ -245,6 +245,7 @@ svg {
 .expr {
     min-height: 1.6em;
     padding-left: 40px;
+    padding-right: 34px;
     font-size: 1rem;
     color: var(--muted);
     white-space: nowrap;
@@ -555,3 +556,127 @@ svg {
 #convert-online small { display: block; margin-top: .5rem; line-height: 1.7; overflow-wrap: anywhere; }
 #convert-online a { color: var(--accent); text-decoration: underline; }
 #convert-refresh:disabled { opacity: .65; cursor: wait; }
+
+/* ---------- أزرار الذاكرة ---------- */
+.memory {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+}
+.btn-mem {
+    min-height: 40px;
+    border-radius: 12px;
+    background: var(--op-bg);
+    color: var(--accent);
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+@media (max-width: 380px) {
+    .memory {
+        gap: 6px;
+    }
+    .btn-mem {
+        min-height: 36px;
+        font-size: 0.85rem;
+    }
+}
+
+/* ---------- مؤشر الذاكرة ---------- */
+.mem-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 1px 6px;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+/* ---------- لوحة اختيار لون التمييز ---------- */
+.accent-panel {
+    position: absolute;
+    top: 60px;
+    inset-inline-end: 14px;
+    z-index: 6;
+    display: flex;
+    gap: 6px;
+    padding: 8px;
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    background: var(--panel);
+    box-shadow: var(--shadow);
+    animation: slide-up 0.18s ease-out;
+}
+.swatch .dot {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--card-border);
+}
+.dot-green { background: #4a7a58; }
+.dot-blue { background: #4a6e96; }
+.dot-amber { background: #a8874a; }
+.dot-rose { background: #a15b68; }
+.dot-violet { background: #7a63a8; }
+
+/* ---------- لوحات لون التمييز (خلفيات سادة، ألوان هادئة) ---------- */
+:root[data-accent='blue'] {
+    --accent: #a8c6e2;
+    --accent-strong: #c3daef;
+    --on-accent: #10202f;
+    --op-bg: #2c3743;
+    --focus: #a8c6e2;
+}
+:root[data-theme='light'][data-accent='blue'] {
+    --accent: #365a7a;
+    --accent-strong: #274863;
+    --on-accent: #ffffff;
+    --op-bg: #e4ebf2;
+    --focus: #365a7a;
+}
+:root[data-accent='amber'] {
+    --accent: #dfc9a0;
+    --accent-strong: #eedbb4;
+    --on-accent: #2b2110;
+    --op-bg: #3f3829;
+    --focus: #dfc9a0;
+}
+:root[data-theme='light'][data-accent='amber'] {
+    --accent: #7d5f28;
+    --accent-strong: #654c1c;
+    --on-accent: #ffffff;
+    --op-bg: #f2ecdd;
+    --focus: #7d5f28;
+}
+:root[data-accent='rose'] {
+    --accent: #e3b3bd;
+    --accent-strong: #f0c9d1;
+    --on-accent: #2c1319;
+    --op-bg: #412e34;
+    --focus: #e3b3bd;
+}
+:root[data-theme='light'][data-accent='rose'] {
+    --accent: #8a4250;
+    --accent-strong: #72303d;
+    --on-accent: #ffffff;
+    --op-bg: #f3e5e7;
+    --focus: #8a4250;
+}
+:root[data-accent='violet'] {
+    --accent: #c6b6e6;
+    --accent-strong: #d8cbf0;
+    --on-accent: #1f1430;
+    --op-bg: #372f47;
+    --focus: #c6b6e6;
+}
+:root[data-theme='light'][data-accent='violet'] {
+    --accent: #5e4885;
+    --accent-strong: #4c3670;
+    --on-accent: #ffffff;
+    --op-bg: #eae5f3;
+    --focus: #5e4885;
+}
