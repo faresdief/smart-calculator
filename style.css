@@ -550,3 +550,8 @@ svg {
 #convert-result { display: block; padding: 12px; border-radius: 10px; background: var(--display-bg); overflow-wrap: anywhere; font-size: 16px; }
 #convert-result.is-error { color: var(--danger); font-size: 13px; }
 .keyboard-hint { color: var(--muted); font-size: 10px; text-align: center; direction: ltr; margin: 12px 0 0; }
+
+/* Optional daily exchange rates */
+#convert-online small { display: block; margin-top: .5rem; line-height: 1.7; overflow-wrap: anywhere; }
+#convert-online a { color: var(--accent); text-decoration: underline; }
+#convert-refresh:disabled { opacity: .65; cursor: wait; }
