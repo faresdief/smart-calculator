@@ -285,6 +285,105 @@
   }
 
   /* ------------------------------------------------------------------ */
+  /* حاسبة النسب: خصم، إكرامية، ضريبة، نسبة من رقم، نسبة التغيّر           */
+  /* ------------------------------------------------------------------ */
+
+  const PERCENT_MAX_AMOUNT = 1e12;
+  const PERCENT_MAX_RATE = 1000;
+  const MAX_PEOPLE = 100;
+
+  /** يقرأ رقماً عشرياً (أرقام لاتينية أو هندية، فواصل آلاف). null لو غير صالح. */
+  function parseAmount(str) {
+    const s = Calc.delocalizeNumerals(String(str)).replace(/[\s,]/g, '');
+    if (!/^-?(?:\d+\.?\d*|\.\d+)$/.test(s)) return null;
+    const n = Number(s);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  /** يقرّب لأقرب سنت (بدون أخطاء الفاصلة العائمة). */
+  function round2(x) {
+    const r = Math.round((Math.abs(x) + 1e-9) * 100) / 100;
+    return x < 0 ? -r : r;
+  }
+
+  /**
+   * mode: discount | tip | tax_add | tax_incl | what | change
+   * a, b: قيم نصية أو رقمية؛ people: عدد الأشخاص للإكرامية (افتراضي 1).
+   * يرجع كائن النتيجة أو null لو المدخلات غير صالحة.
+   */
+  function percentCalc(mode, a, b, people) {
+    const x = typeof a === 'number' ? a : parseAmount(a);
+    const y = typeof b === 'number' ? b : parseAmount(b);
+    if (x === null || y === null) return null;
+    const inRange = (v) => Math.abs(v) <= PERCENT_MAX_AMOUNT;
+    if (!inRange(x) || !inRange(y)) return null;
+    switch (mode) {
+      case 'discount': {
+        if (x < 0 || y < 0 || y > 100) return null;
+        const saved = round2((x * y) / 100);
+        return { saved, final: round2(x - saved) };
+      }
+      case 'tip': {
+        if (x < 0 || y < 0 || y > PERCENT_MAX_RATE) return null;
+        let n = 1;
+        if (people !== undefined && people !== null && String(people).trim() !== '') {
+          const p = parseAmount(people);
+          if (p === null || !Number.isInteger(p) || p < 1 || p > MAX_PEOPLE) return null;
+          n = p;
+        }
+        const tip = round2((x * y) / 100);
+        const total = round2(x + tip);
+        return { tip, total, people: n, perPerson: round2(total / n) };
+      }
+      case 'tax_add': {
+        if (x < 0 || y < 0 || y > PERCENT_MAX_RATE) return null;
+        const tax = round2((x * y) / 100);
+        return { tax, total: round2(x + tax) };
+      }
+      case 'tax_incl': {
+        // x = الإجمالي شامل الضريبة، y = نسبة الضريبة
+        if (x < 0 || y < 0 || y > PERCENT_MAX_RATE) return null;
+        const net = round2((x * 100) / (100 + y));
+        return { net, tax: round2(x - net) };
+      }
+      case 'what': {
+        // x كم تساوي نسبته من y
+        if (y === 0) return { error: 'ZERO' };
+        const pct = Number(((x / y) * 100).toPrecision(12));
+        return Number.isFinite(pct) && Math.abs(pct) < 1e15 ? { percent: pct } : { error: 'RANGE' };
+      }
+      case 'change': {
+        // التغيّر من x إلى y
+        if (x === 0) return { error: 'ZERO' };
+        const pct = Number((((y - x) / Math.abs(x)) * 100).toPrecision(12));
+        return Number.isFinite(pct) && Math.abs(pct) < 1e15 ? { percent: pct } : { error: 'RANGE' };
+      }
+      default:
+        return null;
+    }
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* المفضلة                                                             */
+  /* ------------------------------------------------------------------ */
+
+  const FAVORITES_LIMIT = 100;
+
+  function favoriteIndex(list, entry) {
+    if (!Array.isArray(list) || !entry) return -1;
+    return list.findIndex((x) => x && x.expr === entry.expr && x.result === entry.result);
+  }
+
+  /** يضيف العنصر في أول القائمة أو يحذفه لو موجود. لا يعدّل القائمة الأصلية. */
+  function toggleFavorite(list, entry, limit = FAVORITES_LIMIT) {
+    const base = Array.isArray(list) ? list : [];
+    if (!entry || typeof entry.expr !== 'string' || typeof entry.result !== 'string') return base.slice();
+    const i = favoriteIndex(base, entry);
+    if (i !== -1) return base.filter((_, k) => k !== i);
+    return [{ expr: entry.expr, result: entry.result }].concat(base).slice(0, limit);
+  }
+
+  /* ------------------------------------------------------------------ */
   /* حاسبة التواريخ (التقويم الميلادي) — أيام صحيحة بدون كائن Date        */
   /* ------------------------------------------------------------------ */
 
@@ -399,5 +498,10 @@
     parseDayCount,
     dateDifference,
     addDays,
+    parseAmount,
+    percentCalc,
+    FAVORITES_LIMIT,
+    favoriteIndex,
+    toggleFavorite,
   };
 });
