@@ -132,6 +132,11 @@
                     </div>
                     <button type="button" class="convert-swap" id="convert-swap" data-convert-text="swap">عكس الوحدات</button>
                     <label id="convert-rate-group" hidden><span id="convert-rate-label">سعر الصرف</span><input id="convert-rate" type="text" inputmode="decimal" dir="ltr" autocomplete="off" maxlength="80" aria-describedby="convert-rate-hint"><small id="convert-rate-hint" data-convert-text="rateHint"></small></label>
+                    <div id="convert-online" hidden>
+                        <button type="button" class="convert-swap" id="convert-refresh">حدّث السعر</button>
+                        <small id="convert-rate-status" role="status" aria-live="polite"></small>
+                        <small><a id="convert-attribution" href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">أسعار الصرف من ExchangeRate-API</a></small>
+                    </div>
                     <output id="convert-result" aria-live="polite" aria-atomic="true"></output>
                     <small id="convert-note" data-convert-text="manual" hidden></small>
                 </div>
