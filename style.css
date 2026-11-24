@@ -1,6 +1,6 @@
 /* ==========================================================================
    الحاسبة الذكية — Smart Calculator
-   Glassmorphism، ثيم داكن/فاتح، RTL/LTR، متجاوب من 320px
+   Solid surfaces, dark/light themes, RTL/LTR, responsive from 320px
    ========================================================================== */
 
 @font-face {
@@ -25,57 +25,49 @@
     src: url('assets/fonts/poppins-Bold.woff') format('woff');
 }
 
-/* ---------- ألوان ---------- */
+/* ---------- Solid neutral surfaces, one restrained accent ---------- */
 :root {
     color-scheme: dark;
-    --bg-1: #0b1220;
-    --bg-2: #111c33;
-    --bg-3: #1b2a47;
-    --blob-a: rgba(56, 189, 248, 0.28);
-    --blob-b: rgba(129, 140, 248, 0.26);
-    --card: rgba(255, 255, 255, 0.06);
-    --card-border: rgba(255, 255, 255, 0.14);
-    --panel: rgba(12, 19, 36, 0.985);
-    --shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
-    --text: #f8fafc;
-    --muted: #a3b2c7;
-    --display-bg: rgba(0, 0, 0, 0.24);
-    --key: rgba(255, 255, 255, 0.08);
-    --key-hover: rgba(255, 255, 255, 0.16);
-    --key-active: rgba(255, 255, 255, 0.26);
-    --key-border: rgba(255, 255, 255, 0.09);
-    --accent: #38bdf8;
-    --accent-strong: #7dd3fc;
-    --on-accent: #06202e;
-    --op-bg: rgba(56, 189, 248, 0.15);
-    --danger: #fda4af;
-    --focus: #7dd3fc;
+    --bg-1: #141716;
+    --card: #1c201e;
+    --card-border: #353d38;
+    --panel: #1c201e;
+    --shadow: 0 12px 36px rgba(0, 0, 0, 0.16);
+    --text: #f1f3ef;
+    --muted: #b0bab2;
+    --display-bg: #141816;
+    --key: #292f2b;
+    --key-hover: #353e37;
+    --key-active: #424e44;
+    --key-border: #3a443c;
+    --accent: #b6d8bf;
+    --accent-strong: #c9e5d0;
+    --on-accent: #16291c;
+    --op-bg: #2e3b32;
+    --danger: #f4aaa0;
+    --focus: #b6d8bf;
 }
 
 :root[data-theme='light'] {
     color-scheme: light;
-    --bg-1: #e6edfb;
-    --bg-2: #f4f7fd;
-    --bg-3: #dbe6fb;
-    --blob-a: rgba(14, 165, 233, 0.3);
-    --blob-b: rgba(99, 102, 241, 0.22);
-    --card: rgba(255, 255, 255, 0.6);
-    --card-border: rgba(255, 255, 255, 0.95);
-    --panel: rgba(247, 250, 255, 0.985);
-    --shadow: 0 25px 60px rgba(30, 58, 138, 0.18);
-    --text: #0f172a;
-    --muted: #475569;
-    --display-bg: rgba(255, 255, 255, 0.7);
-    --key: rgba(255, 255, 255, 0.78);
-    --key-hover: #ffffff;
-    --key-active: #dbe5f5;
-    --key-border: rgba(15, 23, 42, 0.09);
-    --accent: #0369a1;
-    --accent-strong: #075985;
+    --bg-1: #f1f2ee;
+    --card: #ffffff;
+    --card-border: #d5dbd3;
+    --panel: #ffffff;
+    --shadow: 0 10px 32px rgba(28, 43, 31, 0.06);
+    --text: #202821;
+    --muted: #5c685f;
+    --display-bg: #f3f5f0;
+    --key: #f7f8f5;
+    --key-hover: #ebefe7;
+    --key-active: #dce5d8;
+    --key-border: #dce2d8;
+    --accent: #365e42;
+    --accent-strong: #254d31;
     --on-accent: #ffffff;
-    --op-bg: rgba(3, 105, 161, 0.1);
-    --danger: #be123c;
-    --focus: #0369a1;
+    --op-bg: #e8eee4;
+    --danger: #9e3f35;
+    --focus: #365e42;
 }
 
 /* ---------- أساسيات ---------- */
@@ -96,33 +88,10 @@ body {
     display: grid;
     place-items: center;
     padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-    background: linear-gradient(135deg, var(--bg-1), var(--bg-2) 55%, var(--bg-3));
+    background: var(--bg-1);
     color: var(--text);
     font-family: 'Poppins', 'Segoe UI', Tahoma, 'Noto Sans Arabic', system-ui, -apple-system, sans-serif;
     transition: background-color 0.3s;
-}
-
-/* بقع ضوء خلف الزجاج لتظهر خاصية الـ blur */
-body::before,
-body::after {
-    content: '';
-    position: fixed;
-    z-index: -1;
-    width: 340px;
-    height: 340px;
-    border-radius: 50%;
-    filter: blur(70px);
-    pointer-events: none;
-}
-body::before {
-    top: -80px;
-    inset-inline-start: -60px;
-    background: var(--blob-a);
-}
-body::after {
-    bottom: -90px;
-    inset-inline-end: -60px;
-    background: var(--blob-b);
 }
 
 [hidden] {
@@ -170,8 +139,6 @@ svg {
     background: var(--card);
     border: 1px solid var(--card-border);
     box-shadow: var(--shadow);
-    -webkit-backdrop-filter: blur(18px) saturate(140%);
-    backdrop-filter: blur(18px) saturate(140%);
     overflow: hidden;
 }
 
@@ -406,8 +373,6 @@ svg {
     flex-direction: column;
     padding: 16px;
     background: var(--panel);
-    -webkit-backdrop-filter: blur(24px);
-    backdrop-filter: blur(24px);
     animation: slide-up 0.22s ease-out;
 }
 
