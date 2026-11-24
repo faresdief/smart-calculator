@@ -119,6 +119,26 @@
                 <button type="button" class="btn btn-equal" data-key="equals" data-i18n-label="equals">=</button>
             </div>
 
+            <details class="converter" id="converter">
+                <summary data-convert-text="title">تحويل الوحدات</summary>
+                <div class="converter-body">
+                    <label><span data-convert-text="category">نوع التحويل</span>
+                        <select id="convert-category"><option value="length" data-convert-text="length">الطول</option><option value="mass" data-convert-text="mass">الوزن</option><option value="currency" data-convert-text="currency">العملات</option></select>
+                    </label>
+                    <label><span data-convert-text="amount">القيمة</span><input id="convert-amount" type="text" inputmode="decimal" dir="ltr" autocomplete="off" maxlength="80"></label>
+                    <div class="converter-pair">
+                        <label><span data-convert-text="from">من</span><select id="convert-from"></select></label>
+                        <label><span data-convert-text="to">إلى</span><select id="convert-to"></select></label>
+                    </div>
+                    <button type="button" class="convert-swap" id="convert-swap" data-convert-text="swap">عكس الوحدات</button>
+                    <label id="convert-rate-group" hidden><span id="convert-rate-label">سعر الصرف</span><input id="convert-rate" type="text" inputmode="decimal" dir="ltr" autocomplete="off" maxlength="80" aria-describedby="convert-rate-hint"><small id="convert-rate-hint" data-convert-text="rateHint"></small></label>
+                    <output id="convert-result" aria-live="polite" aria-atomic="true"></output>
+                    <small id="convert-note" data-convert-text="manual" hidden></small>
+                </div>
+            </details>
+
+            <p class="keyboard-hint" id="keyboard-hint">⌨ 0–9 · + − * / · Enter = · Backspace ⌫ · Esc C</p>
+
             <!-- سجل العمليات -->
             <aside class="history" id="history-panel" role="region" data-i18n-label="history" hidden>
                 <header class="history-head">
@@ -145,5 +165,6 @@
     <script src="calc.js"></script>
     <script src="state.js"></script>
     <script src="script.js"></script>
+    <script src="converter.js"></script>
 </body>
 </html>
